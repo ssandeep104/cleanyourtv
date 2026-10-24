@@ -298,3 +298,12 @@ Reading (INFERENCE, to test with the log pulls in this section):
   restart cleared. So the dropbox pull can confirm a crash, but cannot rule out a low-memory kill.
 
 Status: B1 is held until the dropbox pull is read.
+
+### Incident pull 1: dropbox filtered for Couchy and Home On Fire (AUDIT)
+
+`dumpsys dropbox` grepped for `couchy|homeonfire|toolici`: empty. Android's dropbox listing shows a short
+preview of each entry, and a crash or ANR entry starts with `Process: <package>`, so a recorded crash or ANR of
+either app would normally have matched (INFERENCE from how the listing works on Android 9, not checked on this
+stick). So there is no recorded crash or ANR for Couchy or Home On Fire. That weakens "Couchy crashed" and fits
+a low-memory kill, which leaves no dropbox entry. It does not prove the kill: the restart wiped the evidence for
+that. Next: the entry headers around the incident time, and whether any screensaver or Photos entries exist.
