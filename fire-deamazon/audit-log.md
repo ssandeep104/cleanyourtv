@@ -419,3 +419,15 @@ minus 20 disabled). The kept apps are fine. CHECK in 02-plan.md now writes the e
 File-based CHECK after B1 (as relayed): 13 kept apps `ok`, HOME and A11Y right, disabled count 20. The relay did
 not include the ENABLED COUNT or SCREENSAVER sections, and gave HOME without the `name=` prefix, so it is not
 yet certain the committed line was the one that ran. Pending: hand checks, reboot, post-reboot CHECK pasted raw.
+
+## U18 recurrence during B1 hand checks, no restart yet (DIRECT)
+
+YouTube opened fine. Stremio: a movie started, playback froze, Stremio then apparently crashed, and the stock
+Amazon Home came up. Pressing Home only refreshes the stock Home; Couchy does not come back. The Fire TV
+screensaver was off (`screensaver_enabled=0`), so it was not the trigger this time; the trigger was Stremio
+streaming under load. CAPTURE is being run before any restart.
+
+Reading before CAPTURE (INFERENCE): the screensaver is no longer the common factor. What both incidents share is
+a heavy foreground app (the screensaver's video, then Stremio's player) on a stick that already reaches its
+low-memory limit in normal use, followed by Home On Fire not bringing Couchy back. Whether Couchy, Home On Fire's
+service, or both are gone is what CAPTURE shows.
