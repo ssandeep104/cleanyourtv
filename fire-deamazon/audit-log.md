@@ -251,3 +251,7 @@ Re-disable (AUDIT): `disabled-user`, `enabled=3`. CHECK after it: all 13 kept ap
 unchanged, disabled count 10.
 STATE the next day, after an overnight pause (AUDIT): `installed=true enabled=3`, so the disable holds. Not yet
 known: whether the stick rebooted before this reading, the post-reboot CHECK, and the hand checks.
+Reboot (DIRECT): the owner restarted the stick twice the evening before, then shut it down overnight; the
+`enabled=3` reading was taken after that, so the disable survives reboots. Hand checks (DIRECT): Couchy on Home,
+stock launcher on long-press Home, apps and NordVPN fine. Remote volume and power not mentioned. Pending:
+post-reboot CHECK and the build check.
