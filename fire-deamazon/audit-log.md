@@ -431,3 +431,25 @@ Reading before CAPTURE (INFERENCE): the screensaver is no longer the common fact
 a heavy foreground app (the screensaver's video, then Stremio's player) on a stick that already reaches its
 low-memory limit in normal use, followed by Home On Fire not bringing Couchy back. Whether Couchy, Home On Fire's
 service, or both are gone is what CAPTURE shows.
+
+### Recurrence CAPTURE, before restart (AUDIT, as relayed)
+
+- A11Y setting: still `io.github.toolicious.homeonfire/.HijackService`.
+- Processes: `com.amazon.tv.launcher` running (about 110 MB RSS); `io.github.toolicious.homeonfire` running
+  (about 27 MB RSS); **no `com.conreo.couchytv` process at all**.
+- Memory: MemTotal 922,268 kB, MemFree 48,944 kB, MemAvailable 168,136 kB.
+- Dropbox: exactly one `data_app_crash` at 2026-10-24 13:30:45 (2876 bytes), the incident minute; other
+  entries are `data_app_anr` from Oct 23.
+- `dmesg` is refused for the shell on this build (`klogctl: Operation not permitted`), so kernel kill lines
+  can only be read afterwards from `SYSTEM_LAST_KMSG`. The relayed CAPTURE differs from the committed one, which
+  reads logcat's event buffer instead of `dmesg`.
+
+Reading (INFERENCE):
+
+- Home On Fire's process is alive and its service setting is on, yet Home does not bring Couchy back, and
+  Couchy is not running. So this is not "Home On Fire was killed". Either Home On Fire is alive but not
+  receiving events (process alive does not mean the service is connected), or it tries to start Couchy and
+  Couchy dies straight away, which on screen looks like Home "refreshing" the stock Home.
+- The one crash entry decides between those: if it names Couchy, Couchy crashes on start; if it names Stremio,
+  the crash is Stremio's frozen playback, and Couchy was removed some other way (most likely a low-memory kill
+  while Stremio played).
