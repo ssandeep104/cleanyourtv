@@ -135,3 +135,47 @@ Notes for the plan (DOCUMENT):
   and both `shoptv` packages are already off; `imp` stays enabled and out of every batch, so the stock
   launcher keeps working as your escape hatch. To verify in each check step: long-press Home still opens it.
 
+
+## 0.7 Home, accessibility, verifier (AUDIT, identical on two runs)
+
+| Item | Value | Reading |
+|---|---|---|
+| Default HOME | `com.amazon.tv.launcher/.ui.HomeActivity_vNext`, priority 950, `isDefault=true` | Stock launcher is still the system Home. Couchy reaches the screen through Home On Fire. Matches the brief; nothing to change. |
+| `HomeActivity_vNext` shows `enabled=false` | from `ActivityInfo` | INFERENCE: that field is the manifest default; the resolver still returns the activity, so its runtime state is on. Not touched either way. A read-only check is U13. |
+| `enabled_accessibility_services` | `io.github.toolicious.homeonfire/.HijackService` | Home On Fire's service is on. Off limits. Note: any `am force-stop` of Home On Fire would switch it off, so no batch ever does that. |
+| `package_verifier_enable` | `1` | Install-time verifier is on. Candidate for stage C, but its link to Amazon's blocklist is not established (U2). |
+| `verifier_verify_adb_installs` | `null` (default) | Unchanged. |
+| `install_non_market_apps` | `1` | Sideloading allowed. |
+| `always_finish_activities` | `null` ("Don't keep activities" off) | Stays off (rejected in lifecycle.md). |
+
+## 0.8 Amazon processes (AUDIT, RSS in KB, snapshot)
+
+RSS counts shared memory in every process, so it runs higher than 0.2's PSS; compare within one batch only.
+`firebat` (Prime Video) and `aca` (Alexa hints) were not running at this moment, so they start on demand.
+
+Top Amazon processes and what this repo already knows about each on **the same build**
+(`examples/amazon-fire-tv-stick-lite-2020/`, AFTSS PS7717/5741, DOCUMENT):
+
+| Process | RSS | Same-build record |
+|---|---|---|
+| `com.amazon.tv.ffsprovisioneeclient` | 89,628 | Disabled there (frustration-free setup) |
+| `com.amazon.tv.easyupgrade` | 86,404 | Disabled there ("upgrade your Fire TV" promos) |
+| `com.amazon.diode` | 80,456 | **Protected** there: `pm disable-user` refused |
+| `com.amazon.vizzini` | 78,144 | Kept there (Alexa voice search); comes back at boot on other Fire builds |
+| `com.amazon.device.services`, `com.amazon.device.messaging` | 41,388 / 39,812 | Not in that list (kept) |
+| `com.amazon.alexamediaplayer.runtime.ftv` | 39,584 | Disabled there (Alexa media) |
+| `com.amazon.imp` | 34,368 | Kept; out of every batch here (black Home risk, see 0.6) |
+| `com.amazon.whisperjoin.middleware.np` | 23,056 | Disabled there |
+| `com.amazon.device.software.ota` | 19,916 | Kept there; stage C attempt here |
+| `com.amazon.whad` | 18,832 | Disabled there |
+| `com.amazon.systemnotices` | 18,564 | Disabled there |
+| `com.amazon.neo.minerva`, `.logcat` | 4,428 / 2,252 | Disabled there |
+| `com.amazon.tv.developer.dataservice` | 1,944 | Disabled there |
+| `com.amazon.dialservice` | 2,072 | Kept there (casting) |
+
+Not candidates (input, remote, Bluetooth, keyboard, sign-in, Wi-Fi, HDMI and hardware services): `tv.ime`,
+`device.blepa`, `accessoryconfigservice`, `identity.auth.device.authorization`, `connectivitycontroller`,
+`tv.devicecontrol` (HDMI-CEC TV control, INFERENCE from the name), `amazonfiled`, every `fireos.hardware.*`
+service. `tcomm`, `whisperlink.core.android`, `device.rdmapplication` and `tv.launcher` are not candidates
+either: `tcomm` and `whisperlink` back voice and casting, `rdmapplication` is unclear (left alone), and the
+launcher is off limits.
