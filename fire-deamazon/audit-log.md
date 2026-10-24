@@ -42,3 +42,41 @@ What it already shows (INFERENCE, to confirm against 0.4 to 0.9):
 - Not candidates, whatever they look like: `com.amazon.device.blepa` and `com.amazon.accessoryconfigservice`
   (remote and Bluetooth pairing; INFERENCE from the names, kept out regardless), `com.amazon.tv.ime` (keyboard), `com.amazon.identity.auth.device.authorization`
   (Amazon sign-in that apps rely on), `com.android.*` system processes.
+
+## 0.3 Backup
+
+First run (AUDIT): only `getprop.txt` was real; the seven `pm` and `settings` files held
+`cmd: Failure calling service package: Failed transaction (2147483646)` (confirmed word for word with `cat`).
+Discriminator (AUDIT): `pm list packages -3` printed to the terminal works perfectly, so the failure is only
+in redirecting `pm`/`settings` output straight to a file. Redesigned 0.3 (pipe through `cat`) is committed;
+**its run is pending**.
+
+## 0.4 Third-party apps (AUDIT, from the discriminator run)
+
+18 packages. None of them goes into a change batch: third-party apps are yours, and the plan only touches
+Amazon packages.
+
+| Package | What it is | Status |
+|---|---|---|
+| `com.conreo.couchytv` | Couchy launcher | Off limits (DIRECT) |
+| `io.github.toolicious.homeonfire` | Home On Fire | Off limits (DIRECT) |
+| `com.stremio.one` | Stremio | Keep (DIRECT) |
+| `com.amazon.firetv.youtube` | YouTube for Fire TV (confirms the name in lifecycle.md) | Keep (DIRECT) |
+| `com.esaba.downloader` | Downloader | Keep (DIRECT) |
+| `com.netflix.ninja` | Netflix | Keep (DIRECT) |
+| `com.instagram.airwave` | Instagram for TV | Keep (DIRECT) |
+| `com.nordvpn.android` | NordVPN | Keep (DIRECT) |
+| `dev.vodik7.atvtoolsserver` | atvTools' helper on the stick: your only shell | Keep, never touch (INFERENCE: needed for every batch) |
+| `org.videolan.vlc` | VLC | Yours, not in the brief: kept |
+| `link.unlinked` | Unlinked (app store) | Yours, not in the brief: kept |
+| `com.streamdev.aiostreamer` | AIO Streamer | Yours, not in the brief: kept |
+| `com.amhkor.voltratv` | VoltraTV | Yours, not in the brief: kept |
+| `com.firesend.cleaner` | FireSend Cleaner | Yours, not in the brief: kept. May overlap with the lifecycle stage (U11) |
+| `dev.app1.xyz` | Unknown from the name | Yours: kept. UNRESOLVED (U12) |
+| `com.amazon.tv.legal.notices.overlay.localisation.common` | Amazon resource overlay (legal notices) | Not a candidate: overlays for Settings screens, near the protected list |
+| `com.amazon.tv.settings.v2.overlay.localisation.common` | Amazon resource overlay (Settings) | Not a candidate: Settings |
+| `com.amazon.tv.parentalcontrols.overlay.localisation.common` | Amazon resource overlay (parental controls) | Not a candidate: leave alone |
+
+Silk is not in this list, so it is a system package (`com.amazon.cloud9`, INFERENCE, checked in 0.5).
+Note for the plan: `examples/amazon-fire-tv-stick-lite-2020/` disables Silk; you keep it, so that line is
+not copied.
