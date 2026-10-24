@@ -14,5 +14,5 @@ Each item below is kept out of every batch until it is verified.
 | U8 | Network-level blocking of Amazon update and telemetry hosts | DNS from the router does not apply while NordVPN carries DNS. NordVPN's own options (Threat Protection Lite, custom DNS) could do it but that is a VPN setting, and the owner asked for no DNS-filter plan unless raised | Owner raises it |
 | U9 | Widevine level on an unofficial OS for this model | Per build, not checked | Only matters if tier 3 is chosen |
 | U10 | Whether the eMMC test-point (FT232H) route unlocks sheldon on firmware past 7.2.7.3 | No source found says it beats the preloader patch; needs opening the stick, soldering and a computer | Out of this project's scope unless the owner raises it |
-| U11 | What `com.firesend.cleaner` does (a background cleaner could overlap with or replace stage D) | Not researched yet | Owner says what it does for him, or I look it up before stage D |
+| U11 | What `com.firesend.cleaner` does (a background cleaner could overlap with or replace stage D) | Not researched yet | Owner says how they use it, or I look it up before stage D |
 | U12 | What `dev.app1.xyz` is | Package name says nothing | Owner says what it is; it is never touched either way |
