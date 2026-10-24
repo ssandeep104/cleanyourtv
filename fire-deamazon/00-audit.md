@@ -88,6 +88,21 @@ echo "== SYSTEM INSTALLED =="; pm list packages -s | sort; echo "== COUNT =="; p
 Expected: a long list (150 to 300 lines), then the count. If the pasted list has fewer lines than the
 count, atvTools cut it off: say so and I will split it alphabetically.
 
+### 0.5a / 0.5b: the full list, in two halves for pasting
+
+The gap analysis needs every package name as printed, not a summary: nothing goes into a batch unless the
+audit shows it on this stick. Paste each half as its own output.
+
+```sh
+echo "== SYSTEM 1-120 =="; pm list packages -s | sort | sed -n '1,120p'
+```
+
+```sh
+echo "== SYSTEM 121-END =="; pm list packages -s | sort | sed -n '121,$p'
+```
+
+Expected: 120 lines, then the remaining 117 (237 in all, AUDIT 0.5 count).
+
 ## 0.6 What you already disabled, and what you already uninstalled for your user
 
 ```sh

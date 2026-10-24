@@ -103,3 +103,35 @@ Amazon packages.
 Silk is not in this list, so it is a system package (`com.amazon.cloud9`, INFERENCE, checked in 0.5).
 Note for the plan: `examples/amazon-fire-tv-stick-lite-2020/` disables Silk; you keep it, so that line is
 not copied.
+
+## 0.5 System packages (AUDIT, summary only so far)
+
+237 system packages (237 + 18 third-party = 255, matching the backup). The owner's summary names the full
+Amazon stack still installed: `aca`, `adep`, `firebat`, `firehomestarter`, `hedwig`, `hybridadidservice`,
+`logan`, `media.recommendations`, `minitv`, `neo.minerva`, `sneakpeek`, `tahoe`, `tigris`, `tv.acr`,
+`tv.forcedotaupdater.v2`, `venezia`, `vizzini`, `device.software.ota`, `device.software.ota.override`,
+`device.metrics`, `dp.logger`, `client.metrics.api`, `tv.fw.metrics`, `wirelessmetrics.service`,
+`usagestats.proxy`. **The full printed list is still needed** (batches 0.5a and 0.5b) before any package
+goes into a batch.
+
+## 0.6 Disabled and uninstalled-for-user (AUDIT)
+
+Disabled (9): `com.amazon.bueller.music`, `com.amazon.hedwig`, `com.amazon.media.recommendations`,
+`com.amazon.minitv.android.app`, `com.amazon.ods.kindleconnect`, `com.amazon.shoptv.client`,
+`com.amazon.shoptv.firetv.client`, `com.amazon.tahoe`, `com.android.nfc`.
+
+Uninstalled for user 0: none.
+
+Reading (DIRECT from the owner, consistent with the counts): the earlier removals were these disables plus
+full uninstalls of downloaded apps. No system package has been through `pm uninstall --user 0` on this
+stick, so whether this firmware accepts it is untested: stage A opens with a one-package test and its
+restore line.
+
+Notes for the plan (DOCUMENT):
+
+- `com.android.nfc` disabled is harmless on a stick with no NFC; it stays as it is.
+- On a Fire OS 8 stick in this repo, disabling `com.amazon.imp` together with the shopping and recommendation
+  packages left the stock Home black (`examples/amazon-fire-tv-stick-4k-2023/`). Here `media.recommendations`
+  and both `shoptv` packages are already off; `imp` stays enabled and out of every batch, so the stock
+  launcher keeps working as your escape hatch. To verify in each check step: long-press Home still opens it.
+
