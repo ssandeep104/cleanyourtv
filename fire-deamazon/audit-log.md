@@ -495,3 +495,9 @@ KEEP 13 `ok`; ENABLED COUNT 235; HOME `name=com.amazon.tv.launcher.ui.HomeActivi
 `io.github.toolicious.homeonfire/.HijackService`; DISABLED COUNT 20; SCREENSAVER `0` (stays off across a reboot).
 This is the first raw run of the file-based CHECK, and every section printed.
 B1 STATE after the reboot (AUDIT): all 7 `installed=true enabled=3`. **Stage B1 passed.** Disabled count 20.
+
+## Stage B2: logging, data services, ACR, Wi-Fi password upload (AUDIT)
+
+All 7 `new state: disabled-user`, no refusals: `dp.logger`, `ceviche`, `tv.developer.dataservice`,
+`livedeviceservice`, `privacypassservice`, `wifilocker`, `tv.acr`. STATE: all 7 `installed=true enabled=3`.
+Pending: CHECK (expect disabled 27, enabled 228), hand checks, reboot, CHECK, STATE.
