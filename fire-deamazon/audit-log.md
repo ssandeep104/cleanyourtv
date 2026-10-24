@@ -363,3 +363,11 @@ Reading (INFERENCE):
   and normally sits far lower (more protected), so a kill of it would be unusual.
 - The stick reaches the low-memory limit in normal use (about 234 MB of cache). That supports freeing memory
   (stage B, screensaver off) whatever this incident turns out to be.
+
+### Screensaver facts (DIRECT)
+
+The screensaver is on, and it plays high-resolution aerial video, not still photos. Reading (INFERENCE): video
+decoding needs decoder buffers in addition to the app's own memory (about 144 MB RSS in 0.8), and the footage is
+streamed, so it also adds network traffic to Amazon while the stick is idle. Both fit the memory-pressure
+explanation and argue for Start Time > Never, which is the owner's choice. Still pending: the full grep of all
+stored kernel logs for `onreo`, `homeonfire`, `screensaver`.
