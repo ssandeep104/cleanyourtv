@@ -404,3 +404,9 @@ Reading (INFERENCE):
   master flag at `0`, Android does not start the screensaver (INFERENCE, standard Android behaviour). A grep of
   the settings list for "screensaver" also matched hundreds of times inside Amazon's `ceviche` telemetry config
   values (`com.amazon.ceviche` is in stage B2). Read-only; nothing changed.
+
+## Stage B1: metrics and performance collection (AUDIT)
+
+All 7 `new state: disabled-user`, no protected refusals: `client.metrics.api`, `neo.minerva`, `neo.minerva.logcat`,
+`tv.fw.metrics`, `wirelessmetrics.service`, `perfcollection`, `perfc`. STATE: all 7 `installed=true enabled=3`.
+Pending: CHECK (expect count 20), hand checks, reboot, CHECK, STATE, screensaver flag still `0`.
