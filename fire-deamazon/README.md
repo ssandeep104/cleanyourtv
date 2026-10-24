@@ -35,8 +35,12 @@ Provenance labels used in every file:
 
 ## How a batch works
 
+**Every batch in this project is one line**, steps joined with `;` (AUDIT: atvTools flattens a
+multi-line paste into one line and Return sends it). One batch = one paste = one Return. Each step echoes
+a label before it runs, so the output shows which step said `Success` or an error.
+
 1. Save the **restore batch** in atvTools as a snippet before anything else, so undo is one tap away.
    Do not run it yet.
-2. Run the **change batch**. Each line is one command; check each `Success` or error.
+2. Run the **change batch**. Check each step's `Success` or error in the output.
 3. Run the **check batch**, reboot, run the check batch again, paste both outputs back.
 4. Next batch only after the check is clean.
