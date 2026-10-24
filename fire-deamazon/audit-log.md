@@ -48,8 +48,31 @@ What it already shows (INFERENCE, to confirm against 0.4 to 0.9):
 First run (AUDIT): only `getprop.txt` was real; the seven `pm` and `settings` files held
 `cmd: Failure calling service package: Failed transaction (2147483646)` (confirmed word for word with `cat`).
 Discriminator (AUDIT): `pm list packages -3` printed to the terminal works perfectly, so the failure is only
-in redirecting `pm`/`settings` output straight to a file. Redesigned 0.3 (pipe through `cat`) is committed;
-**its run is pending**.
+in redirecting `pm`/`settings` output straight to a file. Redesigned 0.3 (pipe through `cat`) is committed.
+
+Rerun (AUDIT): **success, backup complete.** No file failed.
+
+| File | Lines |
+|---|---|
+| `getprop.txt` | 462 |
+| `pkgs-all-incl-uninstalled.txt` | 255 |
+| `pkgs-installed.txt` | 255 |
+| `pkgs-disabled.txt` | 9 |
+| `pkgs-thirdparty.txt` | 18 (matches 0.4) |
+| `settings-global.txt` | 170 |
+| `settings-secure.txt` | 215 |
+| `settings-system.txt` | 338 |
+
+What the counts already say (INFERENCE, 0.6 confirms or corrects):
+
+- **The two package lists are the same length, so nothing is uninstalled for user 0 right now.**
+  `pm list packages -u` adds packages that are still in the system image but removed for your user; there
+  are none. Your earlier removals (DIRECT: you used ADB to uninstall some Amazon apps) were then one of:
+  Amazon apps installed on `/data` (from the Appstore, not the system image), which an uninstall removes
+  completely, so no list shows them any more; or system apps whose `pm uninstall --user 0` did not take
+  on this build; or something since brought them back (a factory reset or an update). Which one matters
+  for stage A: if `pm uninstall --user 0` is refused on this firmware, stage A becomes disables.
+- **Only 9 packages are disabled.** Fewer than a typical debloat; the gap analysis will be most of the list.
 
 ## 0.4 Third-party apps (AUDIT, from the discriminator run)
 

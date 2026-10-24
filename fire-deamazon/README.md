@@ -16,7 +16,7 @@ Provenance labels used in every file:
 
 | Step | File | State |
 |---|---|---|
-| 0. Read-only audit and on-stick backup | [00-audit.md](00-audit.md), results in [audit-log.md](audit-log.md) | 0.1, 0.2, 0.4 done; 0.3 rerun pending |
+| 0. Read-only audit and on-stick backup | [00-audit.md](00-audit.md), results in [audit-log.md](audit-log.md) | 0.1 to 0.4 done; backup complete |
 | 1. Current-state and gap analysis | `01-gap-analysis.md` | Waits for the audit output |
 | 2. Stages A-D: uninstall, disable, OTA/verification, app lifecycle | `02-plan.md` | Waits for the audit output |
 | Ceiling: what full ownership needs | [ceiling.md](ceiling.md) | Done for AFTSS on PS7717: shell-only |
