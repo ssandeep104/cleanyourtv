@@ -20,9 +20,14 @@ was changed without harm on the same model and build in this repo (DOCUMENT,
 Paste **CHECK** (same line every stage):
 
 ```sh
-E=$(pm list packages -e); echo "== KEEP =="; for p in com.conreo.couchytv io.github.toolicious.homeonfire com.amazon.tv.launcher com.amazon.firehomestarter com.amazon.imp com.stremio.one com.amazon.firetv.youtube com.esaba.downloader com.amazon.cloud9 com.netflix.ninja com.instagram.airwave com.nordvpn.android dev.vodik7.atvtoolsserver; do echo "$E" | grep -qx "package:$p" && echo "ok $p" || echo "PROBLEM $p"; done; echo "== HOME =="; cmd package resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME | grep -m1 "name="; echo "== A11Y =="; settings get secure enabled_accessibility_services; echo "== DISABLED COUNT =="; pm list packages -d | wc -l
+F=/sdcard/deamazon/chk.txt; pm list packages -e | cat > $F; echo "== KEEP =="; for p in com.conreo.couchytv io.github.toolicious.homeonfire com.amazon.tv.launcher com.amazon.firehomestarter com.amazon.imp com.stremio.one com.amazon.firetv.youtube com.esaba.downloader com.amazon.cloud9 com.netflix.ninja com.instagram.airwave com.nordvpn.android dev.vodik7.atvtoolsserver; do grep -qx "package:$p" $F && echo "ok $p" || echo "PROBLEM $p"; done; echo "== ENABLED COUNT =="; wc -l < $F; echo "== HOME =="; cmd package resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME | grep -m1 "name="; echo "== A11Y =="; settings get secure enabled_accessibility_services; echo "== DISABLED COUNT =="; pm list packages -d | wc -l; echo "== SCREENSAVER =="; settings get secure screensaver_enabled
 ```
-Expected: `ok` for all 13 apps (no `PROBLEM`), HOME names `com.amazon.tv.launcher.ui.HomeActivity_vNext`,
+CHECK writes the enabled list to `/sdcard/deamazon/chk.txt` through the `cat` pipe and checks each app against
+that file (AUDIT, B1: an in-memory version of this check once reported every kept app missing while
+`pm list packages -e` showed them all present; the file method is the one proven by the backup in 0.3).
+
+Expected: `ok` for all 13 apps (no `PROBLEM`), ENABLED COUNT equal to 255 minus the disabled count (235 after
+B1), SCREENSAVER `0`, HOME names `com.amazon.tv.launcher.ui.HomeActivity_vNext`,
 A11Y names `io.github.toolicious.homeonfire/.HijackService`, and a disabled count that moves as the stage says
 (up by the batch size after each A, B and C1 batch, unchanged otherwise; 9 at the start). Then paste the stage's own **STATE** line (the end of each change and restore line prints it too).
 

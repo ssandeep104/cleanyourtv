@@ -410,3 +410,9 @@ Reading (INFERENCE):
 All 7 `new state: disabled-user`, no protected refusals: `client.metrics.api`, `neo.minerva`, `neo.minerva.logcat`,
 `tv.fw.metrics`, `wirelessmetrics.service`, `perfcollection`, `perfc`. STATE: all 7 `installed=true enabled=3`.
 Pending: CHECK (expect count 20), hand checks, reboot, CHECK, STATE, screensaver flag still `0`.
+CHECK anomaly (AUDIT): a CHECK run after B1 printed `MISSING` for all 13 kept apps, while DISABLED COUNT was 20 as
+expected and HOME and A11Y were right. The committed CHECK prints `ok` or `PROBLEM`, never `MISSING`, and its
+HOME line has a `name=` prefix, so the line that ran was most likely not the committed one. A direct probe
+showed `pm list packages -e` containing both Couchy and Home On Fire, with 235 enabled packages (255 installed
+minus 20 disabled). The kept apps are fine. CHECK in 02-plan.md now writes the enabled list to a file through
+`cat` and checks against the file, and also prints the enabled count and the screensaver flag.
