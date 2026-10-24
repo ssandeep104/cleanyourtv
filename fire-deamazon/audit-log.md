@@ -247,3 +247,7 @@ rewritten as disables in [02-plan.md](02-plan.md).
 `installed=true enabled=3`. `pm disable-user --user 0` works on this build, so stage B's method is confirmed.
 Restore proof (AUDIT): `pm enable --user 0` gave `new state: enabled`, STATE `installed=true enabled=1`. The way
 back works. Pending: disable again, CHECK, hand checks, reboot.
+Re-disable (AUDIT): `disabled-user`, `enabled=3`. CHECK after it: all 13 kept apps `ok`, HOME and A11Y
+unchanged, disabled count 10.
+STATE the next day, after an overnight pause (AUDIT): `installed=true enabled=3`, so the disable holds. Not yet
+known: whether the stick rebooted before this reading, the post-reboot CHECK, and the hand checks.
