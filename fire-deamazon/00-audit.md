@@ -116,6 +116,16 @@ Expected if nothing were missing: `20:package:com.amazon.application.compatibili
 `220:package:com.android.settings.intelligence`. From the first checkpoint that shows a different name,
 everything is shifted by one.
 
+### 0.5d: print the window that 0.5c pointed to
+
+AUDIT 0.5c: checkpoints match the file through line 160 and differ at 180, so the missing name is in lines 161 to 180.
+
+```sh
+echo "== SYSTEM 161-180 =="; pm list packages -s | sort | sed -n '161,180p'
+```
+
+Expected: 20 names; the one not in `audit-0.5-system-packages.txt` lines 161 to 179 is the missing package.
+
 ## 0.6 What you already disabled, and what you already uninstalled for your user
 
 ```sh

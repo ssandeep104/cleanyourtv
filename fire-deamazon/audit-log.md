@@ -216,3 +216,14 @@ Sounds > Screensaver > Start Time > Never, with no package change, if the owner 
 All 13 kept apps `ok`; HOME `com.amazon.tv.launcher.ui.HomeActivity_vNext`; A11Y
 `io.github.toolicious.homeonfire/.HijackService`; disabled count 9. The full line (about 680 characters)
 ran to completion, so lines of that length work in atvTools (U16 resolved).
+
+## 0.5c checkpoints (AUDIT)
+
+Lines 20 to 160 match the file; at 180 the stick has `com.amazon.whad` where the file has
+`com.amazon.whasettings`. So the one missing name sorts between `com.amazon.tv.ottssocompanionapp` (160) and
+`com.amazon.whad` (file line 179). `com.amazon.tv.releasenotes` fits that window (between
+`tv.quicksettings.ui.sheldon.overlay` and `tv.resolutioncycler`) and is on the same-build list, but the
+checkpoints alone do not name it: any name in that range could be the one. Batch 0.5d prints the 20 lines to
+settle it. `com.amazon.device.services` (my earlier guess) is ruled out: it would sort near line 58, and
+checkpoint 60 matches. The `com.amazon.device.services` process in 0.2 and 0.8 therefore runs inside another
+package (INFERENCE: a shared process of an Amazon system package).
