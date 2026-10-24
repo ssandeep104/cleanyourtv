@@ -493,4 +493,5 @@ app list, then press Home) answers it.
 
 KEEP 13 `ok`; ENABLED COUNT 235; HOME `name=com.amazon.tv.launcher.ui.HomeActivity_vNext`; A11Y
 `io.github.toolicious.homeonfire/.HijackService`; DISABLED COUNT 20; SCREENSAVER `0` (stays off across a reboot).
-This is the first raw run of the file-based CHECK, and every section printed. Pending: B1 STATE.
+This is the first raw run of the file-based CHECK, and every section printed.
+B1 STATE after the reboot (AUDIT): all 7 `installed=true enabled=3`. **Stage B1 passed.** Disabled count 20.
