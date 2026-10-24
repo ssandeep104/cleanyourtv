@@ -371,3 +371,21 @@ decoding needs decoder buffers in addition to the app's own memory (about 144 MB
 streamed, so it also adds network traffic to Amazon while the stick is idle. Both fit the memory-pressure
 explanation and argue for Start Time > Never, which is the owner's choice. Still pending: the full grep of all
 stored kernel logs for `onreo`, `homeonfire`, `screensaver`.
+
+### Two aerial videos, not one (DIRECT)
+
+1. The Fire TV screensaver (`com.amazon.ftv.screensaver`, Amazon's): on, plays aerial video.
+2. Couchy's own home screen background: also a high-resolution aerial video, playing on Couchy's home screen.
+
+Reading (INFERENCE):
+
+- The main suspect stays the Fire TV screensaver: about 144 MB RSS when it ran in 0.8, it starts after a few idle
+  minutes (which matches the incident), and when it ends the system shows the default Home, which is the stock
+  launcher.
+- Couchy's video is not cleared, though. While it plays, its decoder buffers and frames are part of Couchy's
+  memory. When the screensaver comes to the front, Couchy becomes a background process, and the low-memory
+  killer picks the larger processes first at the same level, so a bigger Couchy is a likelier target. And the
+  screensaver may start while Couchy's video is still loaded, putting two video sessions on a 1 GB stick at once.
+  0.2 measured Couchy at 28 MB PSS, but not while its video was confirmed playing on screen.
+- Test one change at a time: first the Fire TV screensaver off (Start Time > Never). If the drop-out still
+  happens, then try a still image as Couchy's background. Changing both at once would not tell which mattered.
