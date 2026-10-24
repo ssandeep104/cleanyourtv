@@ -195,3 +195,18 @@ Not candidates (input, remote, Bluetooth, keyboard, sign-in, Wi-Fi, HDMI and har
 service. `tcomm`, `whisperlink.core.android`, `device.rdmapplication` and `tv.launcher` are not candidates
 either: `tcomm` and `whisperlink` back voice and casting, `rdmapplication` is unclear (left alone), and the
 launcher is off limits.
+
+### 0.8 second snapshot (AUDIT; 0.7 rerun identical)
+
+- `com.amazon.ftv.screensaver` at 143,668 KB RSS: the screensaver had started between runs. It is the
+  single largest Amazon process seen so far.
+- `ffsprovisioneeclient`, `easyupgrade` and `diode` (the first snapshot's top three) are gone: they wake,
+  work and exit. A one-off `ps` cannot measure their total cost; disabling them stops the wake-ups.
+- Still resident in both snapshots: `vizzini`, `device.services`, `device.messaging`, `imp`,
+  `alexamediaplayer.runtime.ftv`, `tcomm`, `whisperlink.core.android`, `whisperjoin.middleware.np`,
+  `device.software.ota`, `systemnotices`, `whad`, `neo.minerva`, `neo.minerva.logcat`,
+  `tv.developer.dataservice`, `dialservice`.
+
+For the plan (INFERENCE): the screensaver is kept as a package on the same-build list (DOCUMENT), and
+whether it runs at all is a menu setting, not a package question. The plan will offer Settings > Display &
+Sounds > Screensaver > Start Time > Never, with no package change, if the owner wants it.
