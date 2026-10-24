@@ -245,4 +245,5 @@ rewritten as disables in [02-plan.md](02-plan.md).
 
 `com.amazon.tmm.tutorial: Package com.amazon.tmm.tutorial new state: disabled-user`; STATE
 `installed=true enabled=3`. `pm disable-user --user 0` works on this build, so stage B's method is confirmed.
-Pending: restore proof, disable again, CHECK, hand checks, reboot.
+Restore proof (AUDIT): `pm enable --user 0` gave `new state: enabled`, STATE `installed=true enabled=1`. The way
+back works. Pending: disable again, CHECK, hand checks, reboot.
