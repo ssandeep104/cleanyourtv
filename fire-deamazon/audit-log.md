@@ -488,3 +488,9 @@ app list, then press Home) answers it.
 - The Stremio stream was 1080p, not 4K or a remux. So stream quality was not what drove Stremio to 584 MB; its
   own footprint did (INFERENCE: player, buffers and Stremio's built-in streaming server in one process).
 - The owner's view (DIRECT): this stick is probably not powerful enough for apps like Stremio.
+
+### B1 post-reboot CHECK (AUDIT, committed line, raw)
+
+KEEP 13 `ok`; ENABLED COUNT 235; HOME `name=com.amazon.tv.launcher.ui.HomeActivity_vNext`; A11Y
+`io.github.toolicious.homeonfire/.HijackService`; DISABLED COUNT 20; SCREENSAVER `0` (stays off across a reboot).
+This is the first raw run of the file-based CHECK, and every section printed. Pending: B1 STATE.
