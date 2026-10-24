@@ -338,9 +338,28 @@ The shutdown burst fills the tail window, so a narrower `head -40` run is next.
 
 Reading (INFERENCE):
 
-- The `lmkd` lines show this stick kills under low memory with the userspace daemon `lmkd`, not the kernel's
-  built-in killer. On Android 9, `lmkd` writes its kill reports to logcat, not to the kernel log. So the kernel
-  log can contain no kill lines even if a kill happened: an empty result here does not rule one out.
+- ~~The kernel log may not record low-memory kills on this stick.~~ Corrected by pull 4 below: it does.
 - Logcat lives in memory and the restart cleared it. The two `Log.main` zips in dropbox are from after the boot
   (12:47 and 12:52), so they do not cover the incident.
 - Kernel time 1286 s at shutdown means that boot had run about 21 minutes.
+
+### Incident pull 4: SYSTEM_LAST_KMSG, head (AUDIT)
+
+`dumpsys dropbox --print SYSTEM_LAST_KMSG` prints every stored entry, oldest first. The head window is an older
+session (kernel time about 54322 to 54377 s, about 15 hours up), not the incident session. It holds a
+low-memory kill storm, all `cache below limit 239616kB`: `uicksettings.ui`, `android.service`, `v.settings.core`,
+`.tv.settings.v2`, `arentalcontrols`, `id.proxyhandler`, `om.amazon.logan`, `com.amazon.adep`, `.amazon.ceviche`
+(adj 901) and `iders.downloads`, `android.service` (adj 902), then `lmkd` gets signal 15 as that session shuts
+down. The kernel log names processes by their last 15 characters, as expected. No Couchy, Home On Fire or
+screensaver names in either window seen so far. Next: a grep of all stored entries with no head or tail limit.
+
+Reading (INFERENCE):
+
+- **Correction:** low-memory kills do reach the kernel log on this stick, so the incident session's log is real
+  evidence after all. If the full grep shows no kill of `conreo.couchytv` or `ious.homeonfire` in the incident
+  session, a low-memory kill becomes unlikely, unless that session's log was cut short by the buffer size.
+- The storm killed only cached background processes (adj 900 and up). Couchy in the background would sit
+  around that level, so it can be killed this way. Home On Fire's accessibility service is bound by the system
+  and normally sits far lower (more protected), so a kill of it would be unusual.
+- The stick reaches the low-memory limit in normal use (about 234 MB of cache). That supports freeing memory
+  (stage B, screensaver off) whatever this incident turns out to be.
