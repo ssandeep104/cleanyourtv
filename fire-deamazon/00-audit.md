@@ -8,6 +8,13 @@ Return sends it). Copy the whole line, paste it into the atvTools ADB shell, pre
 output back. Steps are joined with `;`, so a step that fails does not stop the ones after it, and each
 section prints an `== label ==` so the output is easy to read.
 
+**Rule for this build (AUDIT, batch 0.3):** `pm`, `settings` and `cmd` hand their output file to Android's
+system process, which then writes into it. Redirected straight to a file on `/sdcard`, that write is refused
+and the file gets only `cmd: Failure calling service package: Failed transaction (2147483646)`. So in this
+project, output from `pm`, `settings` or `cmd` always goes through a pipe first (`| cat > file`, `| sort`,
+`| grep`, or `$(...)`); the system process may write into a pipe, and the shell writes the file.
+`getprop` and `dumpsys` are not affected (they worked in 0.2 and 0.3).
+
 If atvTools cuts a line off (output ends early, or an error about an unexpected end), tell me which batch
 and I will split it.
 
@@ -48,12 +55,20 @@ Expected: total RAM, free space on `/data`, and the 40-odd biggest processes rig
 
 ## 0.3 Backup on the stick (writes files to /sdcard only)
 
+First attempt (AUDIT): `getprop.txt` was written (16,861 bytes); the seven `pm` and `settings` files held only
+the `Failed transaction` line (70 and 71 bytes), because their output was redirected straight to `/sdcard`.
+This version pipes each one through `cat`, deletes only the seven broken files, keeps `getprop.txt`, then
+checks itself:
+
 ```sh
-D=/sdcard/deamazon/b0; mkdir -p $D; pm list packages -u > $D/pkgs-all-incl-uninstalled.txt; pm list packages > $D/pkgs-installed.txt; pm list packages -d > $D/pkgs-disabled.txt; pm list packages -3 > $D/pkgs-thirdparty.txt; getprop > $D/getprop.txt; settings list global > $D/settings-global.txt; settings list secure > $D/settings-secure.txt; settings list system > $D/settings-system.txt; ls -l $D
+D=/sdcard/deamazon/b0; mkdir -p $D; rm -f $D/pkgs-*.txt $D/settings-*.txt; pm list packages -u | cat > $D/pkgs-all-incl-uninstalled.txt; pm list packages | cat > $D/pkgs-installed.txt; pm list packages -d | cat > $D/pkgs-disabled.txt; pm list packages -3 | cat > $D/pkgs-thirdparty.txt; settings list global | cat > $D/settings-global.txt; settings list secure | cat > $D/settings-secure.txt; settings list system | cat > $D/settings-system.txt; echo "== LINES =="; wc -l $D/*.txt; echo "== FAILED FILES (should be empty) =="; grep -l "Failure calling" $D/*.txt
 ```
 
-Expected: eight files listed, none of them 0 bytes. Paste only the `ls -l` lines, never the files themselves
-(`getprop.txt` and the settings files hold identifiers). They stay on the stick as the "before" record.
+Expected: a line count per file, and nothing under FAILED FILES. Rough sizes: `pkgs-all-incl-uninstalled`
+200 or more lines, `pkgs-installed` fewer than that, `pkgs-disabled` a few dozen (your earlier disables),
+`pkgs-thirdparty` about ten, each settings file dozens to hundreds, `getprop` several hundred. Any file at
+1 line, or any name under FAILED FILES, means stop and paste it. The counts carry no identifiers, so the
+whole output is safe to paste. Never paste the files themselves.
 
 ## 0.4 Third-party apps (what you installed)
 
@@ -78,6 +93,8 @@ count, atvTools cut it off: say so and I will split it alphabetically.
 ```sh
 echo "== DISABLED =="; pm list packages -d | sort; pm list packages -u | sort > /data/local/tmp/u.txt; pm list packages | sort > /data/local/tmp/i.txt; echo "== UNINSTALLED FOR USER 0 =="; grep -vxFf /data/local/tmp/i.txt /data/local/tmp/u.txt; rm /data/local/tmp/u.txt /data/local/tmp/i.txt
 ```
+
+Already safe under the rule above: every `pm` output here goes through `sort` before it reaches a file.
 
 Expected: two lists. The second one is everything still in the system image that you removed for your user;
 each of those can come back with `cmd package install-existing <name>`.

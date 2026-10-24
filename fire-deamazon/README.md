@@ -39,6 +39,9 @@ Provenance labels used in every file:
 multi-line paste into one line and Return sends it). One batch = one paste = one Return. Each step echoes
 a label before it runs, so the output shows which step said `Success` or an error.
 
+Output from `pm`, `settings` or `cmd` always goes through a pipe (`| cat > file`) before it reaches a file:
+redirected straight to `/sdcard` it fails on this build (AUDIT, batch 0.3; detail in [00-audit.md](00-audit.md)).
+
 1. Save the **restore batch** in atvTools as a snippet before anything else, so undo is one tap away.
    Do not run it yet.
 2. Run the **change batch**. Check each step's `Success` or error in the output.
