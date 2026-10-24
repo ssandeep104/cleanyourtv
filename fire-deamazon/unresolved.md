@@ -21,3 +21,4 @@ Each item below is kept out of every batch until it is verified.
 | U15 | The 35 packages in the gap analysis's Unresolved category (including the `dummy.*` stubs and `providers.contentsupport`) | No Fire TV evidence for their role or for disabling them | One `dumpsys package` look each, on request |
 | U16 | ~~Whether atvTools accepts lines near 680 characters~~ | Resolved: CHECK (about 680) ran to completion | Done |
 | U17 | What `com.amazon.adep` actually does. The relayed note called it blacklist enforcement; this repo's Fire OS 8 list calls it package verification and security events; no source confirms either | Unverified | Stage C0 |
+| U18 | Cause of the stock-Home incident during A2b checks (Couchy not restored by Home) | Crash, low-memory kill during the screensaver, or a Photos and screensaver interaction; the restart cleared the event log | Dropbox pull now; the capture line in 02-plan.md if it happens again, run before any restart |

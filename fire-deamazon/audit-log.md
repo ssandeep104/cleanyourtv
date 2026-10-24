@@ -274,3 +274,27 @@ it happens, so it is harmless.
 CHECK after the disable (AUDIT): 13 kept apps `ok`, HOME and A11Y unchanged, disabled count 13.
 Reported as after the reboot (AUDIT): STATE `enabled=3` for all three, CHECK 13 `ok`, count 13. Pending: the
 uptime line (to confirm a reboot happened before these readings) and the hand checks.
+
+## Incident during A2b checks: stock Home on screen, Home key did not bring Couchy back (DIRECT)
+
+After the app hand checks the owner returned to Couchy, then looked away at a phone for a while. When the owner looked
+back, the TV showed the stock Amazon Home, and pressing Home did not bring Couchy back. A restart (the planned
+next step) fixed it; every check since has passed.
+
+Reading (INFERENCE, to test with the log pulls in this section):
+
+- Home On Fire swaps in Couchy when the stock Home comes to the front. Home not bringing Couchy back means its
+  accessibility service was not working at that moment (its process killed or not yet rebound), or Couchy
+  could not start. Either way, both Couchy's own failure and Home On Fire's would show the same screen.
+- Why the stock Home was on screen with nobody touching the remote: the likeliest trigger is the screensaver.
+  It starts after a few idle minutes, and 0.8 measured it at about 144 MB RSS on a stick with about 158 MB
+  available. Starting it pushes Couchy (now in the background) and possibly Home On Fire's process out under
+  memory pressure (low-memory killer). When the screensaver ends, the default Home, which is still the stock
+  launcher, comes up, and with Home On Fire's process gone nothing redirects it until the service restarts.
+- A link to stage A cannot be ruled out: A2b disabled `com.amazon.bueller.photos`, and Amazon Photos can be a
+  screensaver image source. On the same-build list, Photos was disabled with the screensaver kept and no such
+  problem reported (DOCUMENT), so this is the weaker candidate, but it is checked below.
+- A low-memory kill is not recorded in the crash history; it would be in the in-memory event log, which the
+  restart cleared. So the dropbox pull can confirm a crash, but cannot rule out a low-memory kill.
+
+Status: B1 is held until the dropbox pull is read.

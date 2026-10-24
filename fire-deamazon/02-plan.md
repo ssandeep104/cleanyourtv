@@ -43,6 +43,13 @@ Then by hand, on the TV:
 **Reboot:** Settings > My Fire TV > Restart (or paste `reboot`; atvTools then loses the connection).
 After it is back, reconnect atvTools, paste CHECK and the STATE line again, and repeat the five hand checks.
 
+**If Couchy stops coming back on Home** (stock Home stays on screen), run **CAPTURE** before restarting:
+the restart wipes the in-memory event log that records low-memory kills.
+
+```sh
+echo "== A11Y =="; dumpsys accessibility | grep -i -E "bound|homeonfire" | head -8; echo "== PIDS =="; for p in com.conreo.couchytv io.github.toolicious.homeonfire com.amazon.ftv.screensaver; do echo "$p: $(pidof $p)"; done; echo "== TOP =="; dumpsys activity activities | grep -m2 -E "mResumedActivity|mFocusedActivity"; echo "== EVENTS =="; logcat -d -b events | grep -E "am_kill|am_proc_died|am_low_memory|am_crash|am_anr" | grep -i -E "couchy|homeonfire|screensaver|am_low_memory" | tail -20
+```
+
 **If anything fails** (a `PROBLEM` line, Couchy or the escape hatch missing, a black screen, an app that will
 not open): paste that stage's restore line, reboot, and send me the output. Do not start the next stage.
 
