@@ -24,7 +24,7 @@ E=$(pm list packages -e); echo "== KEEP =="; for p in com.conreo.couchytv io.git
 ```
 Expected: `ok` for all 13 apps (no `PROBLEM`), HOME names `com.amazon.tv.launcher.ui.HomeActivity_vNext`,
 A11Y names `io.github.toolicious.homeonfire/.HijackService`, and a disabled count that moves as the stage says
-(up by the batch size in stage B and C1, down by 4 after A2a, unchanged otherwise). Then paste the stage's own **STATE** line (the end of each change and restore line prints it too).
+(up by the batch size after each A, B and C1 batch, unchanged otherwise; 9 at the start). Then paste the stage's own **STATE** line (the end of each change and restore line prints it too).
 
 How to read STATE: `installed=true enabled=3` is disabled for you; `installed=false` is uninstalled for you;
 `installed=true enabled=0` (default) or `enabled=1` is on.
@@ -43,66 +43,61 @@ After it is back, reconnect atvTools, paste CHECK and the STATE line again, and 
 **If anything fails** (a `PROBLEM` line, Couchy or the escape hatch missing, a black screen, an app that will
 not open): paste that stage's restore line, reboot, and send me the output. Do not start the next stage.
 
-## Stage A: uninstall for user 0 (Amazon apps and tutorials)
+## Stage A: disable (Amazon apps and tutorials)
 
-Why uninstall here and disable in stage B (INFERENCE, your goal decides): these are standalone apps with no
-other package depending on them, so removing them for your user is clean. The background services in stage B
-are disabled instead: that is the form verified on your build, and a disabled service is easier to tell
-apart in a check. `-k` keeps their data, so a restore brings them back as they were. Nothing is deleted from
-the system image: a factory reset brings everything back.
+**Uninstall for user 0 is refused on this firmware** (AUDIT, first A1 run:
+`com.amazon.tmm.tutorial: Failure [DELETE_FAILED_INTERNAL_ERROR]`, package unchanged at `installed=true
+enabled=0`). So stage A disables the same packages instead, the same way as stage B. For your goal the
+effect is the same: a disabled app cannot run, start at boot or show on any screen. The difference is only
+that it stays listed in Settings > Applications as disabled.
 
-### A1: test uninstall and restore on one harmless package (the remote tutorial)
+### A1: disable test on one harmless package (the remote tutorial)
 
 Restore (save first):
 
 ```sh
-echo "== RESTORE (install-existing) =="; for p in com.amazon.tmm.tutorial; do echo "$p: $(cmd package install-existing $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.tmm.tutorial; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
+echo "== RESTORE (enable) =="; for p in com.amazon.tmm.tutorial; do echo "$p: $(pm enable --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.tmm.tutorial; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
 ```
 Change:
 
 ```sh
-echo "== UNINSTALL FOR USER 0 =="; for p in com.amazon.tmm.tutorial; do echo "$p: $(pm uninstall -k --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.tmm.tutorial; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
+echo "== DISABLE =="; for p in com.amazon.tmm.tutorial; do echo "$p: $(pm disable-user --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.tmm.tutorial; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
 ```
-Expected: `Success`, then `installed=false`.
+Expected: `Package com.amazon.tmm.tutorial new state: disabled-user`, then `installed=true enabled=3`.
 
-Now prove the restore path: paste the restore line above. Expected:
-`Package com.amazon.tmm.tutorial installed for user: 0`, then `installed=true enabled=0`.
+Now prove the restore path: paste the restore line above. Expected: `new state: enabled`, then
+`installed=true enabled=1`.
 
-Then paste the change line once more (expected `Success`, `installed=false`), and run CHECK, the hand checks,
+Then paste the change line once more (expected `disabled-user`, `enabled=3`), and run CHECK, the hand checks,
 reboot, and CHECK and STATE again.
 
-**If the uninstall is refused** (`DELETE_FAILED_INTERNAL_ERROR` or any `Failure`): this firmware does not
-take uninstall-for-user. Stop and tell me: stage A2 becomes a disable batch of the same packages.
+**If the disable is refused too** (`Cannot disable a protected package`, `SecurityException`, or any error):
+stop and send it. Stage B uses the same command, so it would need rethinking first.
 
-### A2a: the four you had already disabled
+### A2a: the four you had already disabled: nothing to change
 
-Their restore puts them back exactly as you left them: installed and disabled.
-
-Restore (save first):
-
-```sh
-echo "== RESTORE (install-existing) =="; for p in com.amazon.bueller.music com.amazon.tahoe com.amazon.ods.kindleconnect com.amazon.minitv.android.app; do echo "$p: $(cmd package install-existing $p 2>&1)"; done; echo "== BACK TO DISABLED (as before) =="; for p in com.amazon.bueller.music com.amazon.tahoe com.amazon.ods.kindleconnect com.amazon.minitv.android.app; do echo "$p: $(pm disable-user --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.bueller.music com.amazon.tahoe com.amazon.ods.kindleconnect com.amazon.minitv.android.app; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
-```
-Change:
+`com.amazon.bueller.music`, `com.amazon.tahoe`, `com.amazon.ods.kindleconnect` and
+`com.amazon.minitv.android.app` are already disabled (AUDIT 0.6), which is the final state stage A wants.
+With uninstall refused, there is no further step for them. Confirm they are still off:
 
 ```sh
-echo "== UNINSTALL FOR USER 0 =="; for p in com.amazon.bueller.music com.amazon.tahoe com.amazon.ods.kindleconnect com.amazon.minitv.android.app; do echo "$p: $(pm uninstall -k --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.bueller.music com.amazon.tahoe com.amazon.ods.kindleconnect com.amazon.minitv.android.app; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
+echo "== STATE =="; for p in com.amazon.bueller.music com.amazon.tahoe com.amazon.ods.kindleconnect com.amazon.minitv.android.app; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
 ```
-Expected: `Success` for each, then `installed=false` for each. Then CHECK, hand checks, reboot, CHECK and STATE again.
+Expected: `installed=true enabled=3` for all four. No restore line is needed: nothing changes.
 
 ### A2b: the other three (Photos, the remote app tutorial, games hub)
 
 Restore (save first):
 
 ```sh
-echo "== RESTORE (install-existing) =="; for p in com.amazon.storm.lightning.tutorial com.amazon.bueller.photos com.amazon.gamehub; do echo "$p: $(cmd package install-existing $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.storm.lightning.tutorial com.amazon.bueller.photos com.amazon.gamehub; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
+echo "== RESTORE (enable) =="; for p in com.amazon.storm.lightning.tutorial com.amazon.bueller.photos com.amazon.gamehub; do echo "$p: $(pm enable --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.storm.lightning.tutorial com.amazon.bueller.photos com.amazon.gamehub; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
 ```
 Change:
 
 ```sh
-echo "== UNINSTALL FOR USER 0 =="; for p in com.amazon.storm.lightning.tutorial com.amazon.bueller.photos com.amazon.gamehub; do echo "$p: $(pm uninstall -k --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.storm.lightning.tutorial com.amazon.bueller.photos com.amazon.gamehub; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
+echo "== DISABLE =="; for p in com.amazon.storm.lightning.tutorial com.amazon.bueller.photos com.amazon.gamehub; do echo "$p: $(pm disable-user --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.storm.lightning.tutorial com.amazon.bueller.photos com.amazon.gamehub; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
 ```
-Expected: `Success` for each, then `installed=false` for each. Then CHECK, hand checks, reboot, CHECK and STATE again.
+Expected: `new state: disabled-user` for each, then `installed=true enabled=3` for each. Then CHECK, hand checks, reboot, CHECK and STATE again.
 
 ## Stage B: disable (background services)
 

@@ -61,13 +61,13 @@ Silk and its website launcher; casting and DIAL (phone to YouTube or Netflix); M
 
 ### Already disabled by you, left as they are (5)
 
-Fire TV Channels, recommendations, two shopping packages, NFC. The other four you disabled are apps and move to stage A.
+Fire TV Channels, recommendations, two shopping packages, NFC. The other four you disabled are apps, listed under stage A, and already in their final state.
 
 `com.amazon.hedwig`, `com.amazon.media.recommendations`, `com.amazon.shoptv.client`, `com.amazon.shoptv.firetv.client`, `com.android.nfc`
 
-### Stage A: uninstall for user 0 (apps) (8)
+### Stage A: disable (apps) (8)
 
-User-facing Amazon apps and tutorials, all disabled without trouble on the same build. Four of these you had already disabled.
+User-facing Amazon apps and tutorials, all disabled without trouble on the same build. Four of these you had already disabled. Uninstall for user 0 was planned here, but this firmware refuses it (AUDIT, A1).
 
 `com.amazon.tmm.tutorial`, `com.amazon.storm.lightning.tutorial`, `com.amazon.bueller.photos`, `com.amazon.gamehub`, `com.amazon.bueller.music`, `com.amazon.tahoe`, `com.amazon.ods.kindleconnect`, `com.amazon.minitv.android.app`
 

@@ -233,3 +233,10 @@ package (INFERENCE: a shared process of an Amazon system package).
 Lines 161 to 180 on the stick match the file plus one name: `com.amazon.tv.releasenotes` at line 164.
 Added to [audit-0.5-system-packages.txt](audit-0.5-system-packages.txt), now 237 lines, matching the stick.
 It joins stage B3: the same-build list disabled it ("what's new" release notes) without harm (DOCUMENT).
+
+## Stage A1, first run (AUDIT)
+
+`pm uninstall -k --user 0 com.amazon.tmm.tutorial` returned `Failure [DELETE_FAILED_INTERNAL_ERROR]`; STATE
+stayed `installed=true enabled=0`, so nothing changed. This firmware does not take uninstall-for-user (the same
+error as the Fire TV Box in `docs/TROUBLESHOOTING.md` and the Hisense Fire TV list, DOCUMENT). Stage A is
+rewritten as disables in [02-plan.md](02-plan.md).
