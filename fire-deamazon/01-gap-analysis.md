@@ -30,8 +30,8 @@ applied and rebooted with Home, Prime Video and Netflix working). Every Amazon a
 | Preloaded Amazon apps and tutorials | 8 packages (4 of them already disabled by you) | A |
 | Update machinery | 3 packages | C1 (attempt) |
 | App verification and enforcement | 2 packages + 1 setting | C0 (read-only), then a decision |
-| Prime Video | 2 packages | Your answer to Q1 |
-| Alexa voice core | 9 packages | Your answer to Q2 |
+| Prime Video | 2 packages | Kept, background stopped (D1) |
+| Alexa voice core | 9 packages | Kept; `vizzini` trial (B7) |
 | Amazon Appstore | 2 packages | Your answer to Q3 |
 
 Resident processes this removes (AUDIT 0.8, RSS, which double-counts shared memory): roughly
@@ -119,15 +119,15 @@ Their names point at app verification and enforcement. Community guides disable 
 
 `com.amazon.adep`, `com.amazon.application.compatibility.enforcer`
 
-### Waits for your answer to Q1 (Prime Video) (2)
+### Prime Video: kept, background work stopped in stage D (verdict in 02-plan.md) (2)
 
-`firebat` is Prime Video; `tv.support` belongs to it on the same-build list.
+`firebat` is Prime Video; `tv.support` belongs to it on the same-build list. Disabled only if a measurement shows it starting by itself.
 
 `com.amazon.firebat`, `com.amazon.tv.support`
 
-### Waits for your answer to Q2 (Alexa voice) (9)
+### Alexa voice core: kept except a one-off trial on `vizzini` (B7; verdict in 02-plan.md) (9)
 
-Voice search core and its helpers. Even if you drop voice, `vizzini` came back at every boot on other Fire builds, so this needs its own research before any batch.
+Voice search core and its helpers. Only `vizzini` is resident (about 23 MB); the rest were never seen running. On four other Fire TV builds `vizzini` comes back at every boot.
 
 `com.amazon.vizzini`, `com.amazon.vizzini.ftvcds`, `com.amazon.aria`, `com.amazon.cardinal`, `com.amazon.alexa.datastore.app`, `com.amazon.alexadirectivebrokerservice`, `com.amazon.firetv.androidskillconnectioncapability`, `com.amazon.spotify.mediabrowserservice`, `com.amazon.comms.starktachyon`
 
