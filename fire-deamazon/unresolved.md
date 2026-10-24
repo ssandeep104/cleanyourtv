@@ -19,5 +19,5 @@ Each item below is kept out of every batch until it is verified.
 | U13 | Runtime state of `com.amazon.tv.launcher/.ui.HomeActivity_vNext` (0.7 printed the manifest's `enabled=false`) | Escape hatch matters; the resolver still returns it | Read-only: `dumpsys package com.amazon.tv.launcher \| grep -A3 -i disabledComponents`, plus you confirming long-press Home opens the stock launcher |
 | U14 | The one system package lost when the 0.5 list was relayed (236 of 237); likely `com.amazon.device.services` (INFERENCE: it runs in 0.8 but is not in the list) | Relay gap | Batch 0.5c |
 | U15 | The 35 packages in the gap analysis's Unresolved category (including the `dummy.*` stubs and `providers.contentsupport`) | No Fire TV evidence for their role or for disabling them | One `dumpsys package` look each, on request |
-| U16 | Whether atvTools accepts lines near 680 characters (longest proven: 561) | Not tested | CHECK before stage A |
+| U16 | ~~Whether atvTools accepts lines near 680 characters~~ | Resolved: CHECK (about 680) ran to completion | Done |
 | U17 | What `com.amazon.adep` actually does. The relayed note called it blacklist enforcement; this repo's Fire OS 8 list calls it package verification and security events; no source confirms either | Unverified | Stage C0 |

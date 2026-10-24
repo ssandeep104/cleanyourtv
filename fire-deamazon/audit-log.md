@@ -210,3 +210,9 @@ launcher is off limits.
 For the plan (INFERENCE): the screensaver is kept as a package on the same-build list (DOCUMENT), and
 whether it runs at all is a menu setting, not a package question. The plan will offer Settings > Display &
 Sounds > Screensaver > Start Time > Never, with no package change, if the owner wants it.
+
+## CHECK baseline, before stage A (AUDIT)
+
+All 13 kept apps `ok`; HOME `com.amazon.tv.launcher.ui.HomeActivity_vNext`; A11Y
+`io.github.toolicious.homeonfire/.HijackService`; disabled count 9. The full line (about 680 characters)
+ran to completion, so lines of that length work in atvTools (U16 resolved).

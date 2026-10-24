@@ -13,9 +13,7 @@ was changed without harm on the same model and build in this repo (DOCUMENT,
 - **Never in any batch:** Couchy, Home On Fire, `com.amazon.tv.launcher`, `com.amazon.firehomestarter`,
   `com.amazon.imp`, and every package in the gap analysis's "Needed" and "Kept" categories.
 - **One stage at a time,** in this order. Stop at the first problem.
-- **Line length.** The longest line here is about 680 characters; the longest proven so far is 0.3 at 561.
-  CHECK is one of the longest, so run it once before stage A as a length test: if its output stops early or
-  the shell reports an unexpected end, tell me and I will split the long lines.
+- **Line length.** Lines up to about 680 characters work (AUDIT: CHECK ran to completion).
 
 ### The check, run after every change batch and again after the reboot
 
