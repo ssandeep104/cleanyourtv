@@ -399,3 +399,8 @@ Reading (INFERENCE):
   confirm the setting is pending. This is also the first test for U18: if the drop-out does not recur, the
   screensaver was the likeliest trigger.
 - B1 may proceed: the remaining U18 grep reads a past session and cannot change B1, and B1 only frees memory.
+- Screensaver confirmed (AUDIT): `settings get secure screensaver_enabled` = `0`. `screensaver_components` still
+  names `com.amazon.ftv.screensaver`, and `screensaver_activate_on_dock` and `_on_sleep` are still `1`; with the
+  master flag at `0`, Android does not start the screensaver (INFERENCE, standard Android behaviour). A grep of
+  the settings list for "screensaver" also matched hundreds of times inside Amazon's `ceviche` telemetry config
+  values (`com.amazon.ceviche` is in stage B2). Read-only; nothing changed.
