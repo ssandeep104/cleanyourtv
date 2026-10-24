@@ -25,8 +25,8 @@ Paste **CHECK** (same line every stage):
 E=$(pm list packages -e); echo "== KEEP =="; for p in com.conreo.couchytv io.github.toolicious.homeonfire com.amazon.tv.launcher com.amazon.firehomestarter com.amazon.imp com.stremio.one com.amazon.firetv.youtube com.esaba.downloader com.amazon.cloud9 com.netflix.ninja com.instagram.airwave com.nordvpn.android dev.vodik7.atvtoolsserver; do echo "$E" | grep -qx "package:$p" && echo "ok $p" || echo "PROBLEM $p"; done; echo "== HOME =="; cmd package resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME | grep -m1 "name="; echo "== A11Y =="; settings get secure enabled_accessibility_services; echo "== DISABLED COUNT =="; pm list packages -d | wc -l
 ```
 Expected: `ok` for all 13 apps (no `PROBLEM`), HOME names `com.amazon.tv.launcher.ui.HomeActivity_vNext`,
-A11Y names `io.github.toolicious.homeonfire/.HijackService`, and a disabled count that rose by the stage's
-size. Then paste the stage's own **STATE** line (the end of each change and restore line prints it too).
+A11Y names `io.github.toolicious.homeonfire/.HijackService`, and a disabled count that moves as the stage says
+(up by the batch size in stage B and C1, down by 4 after A2a, unchanged otherwise). Then paste the stage's own **STATE** line (the end of each change and restore line prints it too).
 
 How to read STATE: `installed=true enabled=3` is disabled for you; `installed=false` is uninstalled for you;
 `installed=true enabled=0` (default) or `enabled=1` is on.
