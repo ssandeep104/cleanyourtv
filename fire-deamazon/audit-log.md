@@ -270,4 +270,7 @@ the target state; nothing changed. **A2a passed.**
 three. One `Failed to write while dumping service package: Broken pipe` line appeared between two STATE lines.
 Cause (INFERENCE, standard pipe behaviour): STATE's `grep -m1` stops reading after the first `User 0:` line, so
 `dumpsys` gets a broken pipe when it writes the rest and prints that message. The STATE values are read before
-it happens, so it is harmless. Pending: CHECK, hand checks, reboot.
+it happens, so it is harmless.
+CHECK after the disable (AUDIT): 13 kept apps `ok`, HOME and A11Y unchanged, disabled count 13.
+Reported as after the reboot (AUDIT): STATE `enabled=3` for all three, CHECK 13 `ok`, count 13. Pending: the
+uptime line (to confirm a reboot happened before these readings) and the hand checks.
