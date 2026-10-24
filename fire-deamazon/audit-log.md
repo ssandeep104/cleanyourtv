@@ -328,3 +328,19 @@ Reading (INFERENCE):
   under low memory, its kill lines name the process (Android shortens names to their last 15 characters, for
   example `conreo.couchytv`, `ious.homeonfire`, `ftv.screensaver`; INFERENCE, not checked on this stick).
   That would be direct evidence.
+
+### Incident pull 3: SYSTEM_LAST_KMSG, tail (AUDIT)
+
+Every match in the last 40 is shutdown teardown at kernel time about 1286.49 to 1286.94 s: init and `lmkd`
+unregister messages and `libprocessgroup` stopping system daemons (mediametrics, media, smarthomed, statsd,
+storaged, wificond, zygote, vold, adbd, logd). No Couchy, Home On Fire, screensaver or low-memory kill lines.
+The shutdown burst fills the tail window, so a narrower `head -40` run is next.
+
+Reading (INFERENCE):
+
+- The `lmkd` lines show this stick kills under low memory with the userspace daemon `lmkd`, not the kernel's
+  built-in killer. On Android 9, `lmkd` writes its kill reports to logcat, not to the kernel log. So the kernel
+  log can contain no kill lines even if a kill happened: an empty result here does not rule one out.
+- Logcat lives in memory and the restart cleared it. The two `Log.main` zips in dropbox are from after the boot
+  (12:47 and 12:52), so they do not cover the incident.
+- Kernel time 1286 s at shutdown means that boot had run about 21 minutes.
