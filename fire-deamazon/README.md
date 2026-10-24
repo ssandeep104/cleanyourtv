@@ -18,7 +18,7 @@ Provenance labels used in every file:
 |---|---|---|
 | 0. Read-only audit and on-stick backup | [00-audit.md](00-audit.md), results in [audit-log.md](audit-log.md) | Complete (0.0 to 0.9, 0.5c, 0.5d) |
 | 1. Current-state and gap analysis | [01-gap-analysis.md](01-gap-analysis.md) | Done |
-| 2. Stages A-D: disable apps, disable services, OTA/verification, app lifecycle | [02-plan.md](02-plan.md) | Ready: A, B, C0, C1, D; only Q3 (Appstore) and Q4 (screensaver) open, neither blocks a stage |
+| 2. Stages A-D: disable apps, disable services, OTA/verification, app lifecycle | [02-plan.md](02-plan.md) | Stage A done; B1 next; only Q3 (Appstore) open, it blocks no stage |
 | Ceiling: what full ownership needs | [ceiling.md](ceiling.md) | Done for AFTSS on PS7717: shell-only |
 | Quit-on-exit research | [lifecycle.md](lifecycle.md) | Done; SDK 28, so the recommended per-app restriction is available |
 | Unresolved | [unresolved.md](unresolved.md) | Living list |

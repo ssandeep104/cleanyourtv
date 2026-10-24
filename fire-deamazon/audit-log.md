@@ -389,3 +389,13 @@ Reading (INFERENCE):
   0.2 measured Couchy at 28 MB PSS, but not while its video was confirmed playing on screen.
 - Test one change at a time: first the Fire TV screensaver off (Start Time > Never). If the drop-out still
   happens, then try a still image as Couchy's background. Changing both at once would not tell which mattered.
+
+### Stage A closed
+
+- A2b post-reboot: the restart at 12:43:23 that ended the incident is the reboot; STATE afterwards showed all
+  three at `enabled=3`, CHECK 13 `ok` and count 13, and the owner reports every check fine since (DIRECT).
+- **Stage A passed.** Disabled count 13.
+- Q4 (DIRECT): the owner set the Fire TV screensaver Start Time to Never after the incident. A shell read to
+  confirm the setting is pending. This is also the first test for U18: if the drop-out does not recur, the
+  screensaver was the likeliest trigger.
+- B1 may proceed: the remaining U18 grep reads a past session and cannot change B1, and B1 only frees memory.

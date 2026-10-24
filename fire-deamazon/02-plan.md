@@ -360,7 +360,7 @@ Not seen running, so they cost nothing idle and stay: `aria`, `cardinal`, `vizzi
 | # | Question | Blocks |
 |---|---|---|
 | Q3 | Keep the Amazon Appstore? INFERENCE: your YouTube, Netflix and Instagram are Appstore builds and get their updates through it, so my recommendation is to keep it. | `venezia`, `tigris` |
-| Q4 | Turn the screensaver off in Settings (menu only, no package change)? Optional. | Nothing in the batches |
+| Q4 | ~~Screensaver off~~ Done: Start Time set to Never by the owner after the A2b incident (U18). | Nothing in the batches |
 | U11, U12 | What FireSend Cleaner and `dev.app1.xyz` do for you. | Stage D overlap only |
 
-Q1 (Prime Video) and Q2 (Alexa) are decided above. Stages A, B, C0, C1 and D do not wait on Q3 or Q4.
+Q1 (Prime Video) and Q2 (Alexa) are decided above. Stages A, B, C0, C1 and D do not wait on Q3.
