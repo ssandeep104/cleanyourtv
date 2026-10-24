@@ -255,4 +255,6 @@ Reboot (DIRECT): the owner restarted the stick twice the evening before, then sh
 `enabled=3` reading was taken after that, so the disable survives reboots. Hand checks (DIRECT): Couchy on Home,
 stock launcher on long-press Home, apps and NordVPN fine. Remote volume and power not mentioned.
 Post-reboot CHECK (AUDIT): all 13 kept apps `ok`, HOME and A11Y unchanged, disabled count 10; STATE in the same
-sitting `enabled=3`. **A1 passed**, pending only the remote yes/no and the build line.
+sitting `enabled=3`. **A1 passed**, pending only the remote yes/no.
+Build check (AUDIT): `Fire OS 7.7.1.7 (PS7717/5741)`, unchanged; uptime 10 minutes, matching the owner's
+morning restart. No update has arrived since the audit.
