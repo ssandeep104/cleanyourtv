@@ -10,7 +10,7 @@ applied and rebooted with Home, Prime Video and Netflix working). Every Amazon a
 - Fire TV Stick Lite (AFTSS, `sheldon`), Fire OS 7.7.1.7, Android 9. Shell-only: no unlock or exploit
   applies ([ceiling.md](ceiling.md)).
 - 922 MB RAM with about 158 MB available; 2.4 GB free storage.
-- 237 system packages (236 relayed, one still to locate with 0.5c), 18 third-party.
+- 237 system packages (complete: the one lost in the relay was `com.amazon.tv.releasenotes`, AUDIT 0.5d), 18 third-party.
 - Your earlier work left 9 packages disabled and none uninstalled for user 0.
 - Couchy is Home through Home On Fire's accessibility service; the stock launcher is still the registered
   Home underneath (escape hatch intact).
@@ -24,7 +24,7 @@ applied and rebooted with Home, Prime Video and Netflix working). Every Amazon a
 | Kind | Still active | Plan stage |
 |---|---|---|
 | Telemetry, metrics, logging, usage reporting | 14 packages | B1, B2 (plus 8 protected, which stay) |
-| Ads, sponsored rows, promos, notices, Live tab | 8 packages | B3 |
+| Ads, sponsored rows, promos, notices, Live tab | 9 packages | B3 |
 | Setup and provisioning helpers for other Amazon devices | 4 packages | B4 |
 | Alexa extras (voice search works without them on this build) | 10 packages | B5, B6 |
 | Preloaded Amazon apps and tutorials | 8 packages (4 of them already disabled by you) | A |
@@ -83,11 +83,11 @@ All disabled on the same build. `wifilocker` uploads saved Wi-Fi passwords to Am
 
 `com.amazon.dp.logger`, `com.amazon.ceviche`, `com.amazon.tv.developer.dataservice`, `com.amazon.livedeviceservice`, `com.amazon.privacypassservice`, `com.amazon.wifilocker`, `com.amazon.tv.acr`
 
-### Stage B3: disable (ads, promos, notices, Live tab) (8)
+### Stage B3: disable (ads, promos, notices, Live tab) (9)
 
 All disabled on the same build; Home, Prime Video and Netflix worked after a reboot.
 
-`com.amazon.kso.blackbird`, `com.amazon.sneakpeek`, `com.amazon.hybridadidservice`, `com.amazon.tv.easyupgrade`, `com.amazon.systemnotices`, `com.amazon.uxnotification`, `com.amazon.franktvinput`, `com.amazon.tv.livetv`
+`com.amazon.kso.blackbird`, `com.amazon.sneakpeek`, `com.amazon.hybridadidservice`, `com.amazon.tv.easyupgrade`, `com.amazon.systemnotices`, `com.amazon.uxnotification`, `com.amazon.tv.releasenotes`, `com.amazon.franktvinput`, `com.amazon.tv.livetv`
 
 ### Stage B4: disable (setup helpers for other Amazon devices, Matter controller) (4)
 

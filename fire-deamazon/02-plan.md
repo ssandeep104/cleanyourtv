@@ -139,17 +139,17 @@ echo "== DISABLE =="; for p in com.amazon.dp.logger com.amazon.ceviche com.amazo
 ```
 Expected: `new state: disabled-user` for each, then `enabled=3` for each. Then CHECK, hand checks, reboot, CHECK and STATE.
 
-### B3: ads, promos, notices, Live tab (8 packages)
+### B3: ads, promos, notices, release notes, Live tab (9 packages)
 
 Restore (save first):
 
 ```sh
-echo "== RESTORE (enable) =="; for p in com.amazon.kso.blackbird com.amazon.sneakpeek com.amazon.hybridadidservice com.amazon.tv.easyupgrade com.amazon.systemnotices com.amazon.uxnotification com.amazon.franktvinput com.amazon.tv.livetv; do echo "$p: $(pm enable --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.kso.blackbird com.amazon.sneakpeek com.amazon.hybridadidservice com.amazon.tv.easyupgrade com.amazon.systemnotices com.amazon.uxnotification com.amazon.franktvinput com.amazon.tv.livetv; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
+echo "== RESTORE (enable) =="; for p in com.amazon.kso.blackbird com.amazon.sneakpeek com.amazon.hybridadidservice com.amazon.tv.easyupgrade com.amazon.systemnotices com.amazon.uxnotification com.amazon.tv.releasenotes com.amazon.franktvinput com.amazon.tv.livetv; do echo "$p: $(pm enable --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.kso.blackbird com.amazon.sneakpeek com.amazon.hybridadidservice com.amazon.tv.easyupgrade com.amazon.systemnotices com.amazon.uxnotification com.amazon.tv.releasenotes com.amazon.franktvinput com.amazon.tv.livetv; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
 ```
 Change:
 
 ```sh
-echo "== DISABLE =="; for p in com.amazon.kso.blackbird com.amazon.sneakpeek com.amazon.hybridadidservice com.amazon.tv.easyupgrade com.amazon.systemnotices com.amazon.uxnotification com.amazon.franktvinput com.amazon.tv.livetv; do echo "$p: $(pm disable-user --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.kso.blackbird com.amazon.sneakpeek com.amazon.hybridadidservice com.amazon.tv.easyupgrade com.amazon.systemnotices com.amazon.uxnotification com.amazon.franktvinput com.amazon.tv.livetv; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
+echo "== DISABLE =="; for p in com.amazon.kso.blackbird com.amazon.sneakpeek com.amazon.hybridadidservice com.amazon.tv.easyupgrade com.amazon.systemnotices com.amazon.uxnotification com.amazon.tv.releasenotes com.amazon.franktvinput com.amazon.tv.livetv; do echo "$p: $(pm disable-user --user 0 $p 2>&1)"; done; echo "== STATE =="; for p in com.amazon.kso.blackbird com.amazon.sneakpeek com.amazon.hybridadidservice com.amazon.tv.easyupgrade com.amazon.systemnotices com.amazon.uxnotification com.amazon.tv.releasenotes com.amazon.franktvinput com.amazon.tv.livetv; do echo "$p $(dumpsys package $p | grep -m1 "User 0:" | grep -o -e "installed=[a-z]*" -e "enabled=[0-9]" | tr "\n" " ")"; done
 ```
 Expected: `new state: disabled-user` for each, then `enabled=3` for each. Then CHECK, hand checks, reboot, CHECK and STATE. After B3, also open the stock launcher with long-press Home and leave it on screen for 30 seconds: it must draw rows, not a black screen (the black-Home case in audit-log 0.6 involved `imp`, which is not here).
 
@@ -356,7 +356,6 @@ Not seen running, so they cost nothing idle and stay: `aria`, `cardinal`, `vizzi
 |---|---|---|
 | Q3 | Keep the Amazon Appstore? INFERENCE: your YouTube, Netflix and Instagram are Appstore builds and get their updates through it, so my recommendation is to keep it. | `venezia`, `tigris` |
 | Q4 | Turn the screensaver off in Settings (menu only, no package change)? Optional. | Nothing in the batches |
-| 0.5c | The checkpoint paste, to find the one package lost in the 0.5 relay (likely `com.amazon.device.services`, INFERENCE: it runs in 0.8 but is not in the relayed list). | Completeness of the gap analysis only |
 | U11, U12 | What FireSend Cleaner and `dev.app1.xyz` do for you. | Stage D overlap only |
 
 Q1 (Prime Video) and Q2 (Alexa) are decided above. Stages A, B, C0, C1 and D do not wait on Q3 or Q4.

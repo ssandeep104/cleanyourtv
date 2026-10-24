@@ -227,3 +227,9 @@ checkpoints alone do not name it: any name in that range could be the one. Batch
 settle it. `com.amazon.device.services` (my earlier guess) is ruled out: it would sort near line 58, and
 checkpoint 60 matches. The `com.amazon.device.services` process in 0.2 and 0.8 therefore runs inside another
 package (INFERENCE: a shared process of an Amazon system package).
+
+## 0.5d window (AUDIT)
+
+Lines 161 to 180 on the stick match the file plus one name: `com.amazon.tv.releasenotes` at line 164.
+Added to [audit-0.5-system-packages.txt](audit-0.5-system-packages.txt), now 237 lines, matching the stick.
+It joins stage B3: the same-build list disabled it ("what's new" release notes) without harm (DOCUMENT).

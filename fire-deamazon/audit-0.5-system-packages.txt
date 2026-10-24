@@ -161,6 +161,7 @@ com.amazon.tv.ottssocompanionapp
 com.amazon.tv.parentalcontrols
 com.amazon.tv.quicksettings.ui
 com.amazon.tv.quicksettings.ui.sheldon.overlay
+com.amazon.tv.releasenotes
 com.amazon.tv.resolutioncycler
 com.amazon.tv.routing
 com.amazon.tv.settings.core
