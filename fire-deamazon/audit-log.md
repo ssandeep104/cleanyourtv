@@ -111,8 +111,24 @@ Amazon stack still installed: `aca`, `adep`, `firebat`, `firehomestarter`, `hedw
 `logan`, `media.recommendations`, `minitv`, `neo.minerva`, `sneakpeek`, `tahoe`, `tigris`, `tv.acr`,
 `tv.forcedotaupdater.v2`, `venezia`, `vizzini`, `device.software.ota`, `device.software.ota.override`,
 `device.metrics`, `dp.logger`, `client.metrics.api`, `tv.fw.metrics`, `wirelessmetrics.service`,
-`usagestats.proxy`. **The full printed list is still needed** (batches 0.5a and 0.5b) before any package
-goes into a batch.
+`usagestats.proxy`. Full list relayed afterwards: [audit-0.5-system-packages.txt](audit-0.5-system-packages.txt)
+(sorted, `package:` prefix stripped). **It has 236 names, one short of the 237 the stick counted**: one
+line was lost in the relay. Batch 0.5c locates it. Until then, a package absent from the file is
+"unknown", not "absent".
+
+Compared with the same-build list `examples/amazon-fire-tv-stick-lite-2020/` (DOCUMENT):
+
+- 50 of that list's 51 packages are on this stick (`com.amazon.tv.releasenotes` is not, or is the lost line).
+- Its 5 commented-out protected packages are all here: `device.crashmanager`, `device.logmanager`, `diode`,
+  `fireos.usagestats.proxy` (protected), and `tv.oobe` (kept for factory reset).
+- About 130 Amazon and Fire OS packages here are not in that list at all; each needs a verdict in the gap
+  analysis (keep, candidate with evidence, or unresolved).
+- `com.amazon.application.compatibility.enforcer` (+ `.sdk.library`) is on this stick. Its name points at
+  app enforcement (U2). Community Fire TV guides disable it with `pm disable-user`, but none documents what
+  it does or what breaks (DOCUMENT: [JLCareglio guide](https://gist.github.com/JLCareglio/881ab7feaa8013f838bec02c706b47a3),
+  [ungeskriptet debloater, Fire OS 7.6.2.4](https://gist.github.com/ungeskriptet/256819b3d328a1df364222579608fc59)).
+  It stays out of batches until a read-only `dumpsys package` look at it.
+- The file has `com.amazon.platform.fdrw`, not `fdra` as on Fire OS 8.
 
 ## 0.6 Disabled and uninstalled-for-user (AUDIT)
 

@@ -17,3 +17,4 @@ Each item below is kept out of every batch until it is verified.
 | U11 | What `com.firesend.cleaner` does (a background cleaner could overlap with or replace stage D) | Not researched yet | Owner says how they use it, or I look it up before stage D |
 | U12 | What `dev.app1.xyz` is | Package name says nothing | Owner says what it is; it is never touched either way |
 | U13 | Runtime state of `com.amazon.tv.launcher/.ui.HomeActivity_vNext` (0.7 printed the manifest's `enabled=false`) | Escape hatch matters; the resolver still returns it | Read-only: `dumpsys package com.amazon.tv.launcher \| grep -A3 -i disabledComponents`, plus you confirming long-press Home opens the stock launcher |
+| U14 | The one system package lost when the 0.5 list was relayed (236 of 237) | Relay gap | Batch 0.5c |

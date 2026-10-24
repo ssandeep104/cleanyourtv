@@ -103,6 +103,19 @@ echo "== SYSTEM 121-END =="; pm list packages -s | sort | sed -n '121,$p'
 
 Expected: 120 lines, then the remaining 117 (237 in all, AUDIT 0.5 count).
 
+### 0.5c: find the one package missing from the relayed list
+
+The relayed list has 236 names; the stick counted 237. This prints every 20th line with its number (11 lines),
+so the first number whose name differs from `audit-0.5-system-packages.txt` places the missing name within 20:
+
+```sh
+echo "== CHECKPOINTS =="; pm list packages -s | sort | grep -n . | grep -E '^[0-9]*[02468]0:'
+```
+
+Expected if nothing were missing: `20:package:com.amazon.application.compatibility.enforcer` through
+`220:package:com.android.settings.intelligence`. From the first checkpoint that shows a different name,
+everything is shifted by one.
+
 ## 0.6 What you already disabled, and what you already uninstalled for your user
 
 ```sh
