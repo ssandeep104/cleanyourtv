@@ -263,3 +263,11 @@ morning restart. No update has arrived since the audit.
 
 `bueller.music`, `tahoe`, `ods.kindleconnect`, `minitv.android.app`: all `installed=true enabled=3`. Already in
 the target state; nothing changed. **A2a passed.**
+
+## Stage A2b (AUDIT)
+
+`storm.lightning.tutorial`, `bueller.photos`, `gamehub`: `new state: disabled-user`, STATE `enabled=3` for all
+three. One `Failed to write while dumping service package: Broken pipe` line appeared between two STATE lines.
+Cause (INFERENCE, standard pipe behaviour): STATE's `grep -m1` stops reading after the first `User 0:` line, so
+`dumpsys` gets a broken pipe when it writes the rest and prints that message. The STATE values are read before
+it happens, so it is harmless. Pending: CHECK, hand checks, reboot.

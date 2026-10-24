@@ -26,6 +26,9 @@ Expected: `ok` for all 13 apps (no `PROBLEM`), HOME names `com.amazon.tv.launche
 A11Y names `io.github.toolicious.homeonfire/.HijackService`, and a disabled count that moves as the stage says
 (up by the batch size after each A, B and C1 batch, unchanged otherwise; 9 at the start). Then paste the stage's own **STATE** line (the end of each change and restore line prints it too).
 
+A `Failed to write while dumping service package: Broken pipe` line in STATE output is harmless: STATE reads
+only the first matching line and closes the pipe, and `dumpsys` reports that (AUDIT, A2b).
+
 How to read STATE: `installed=true enabled=3` is disabled for you; `installed=false` is uninstalled for you;
 `installed=true enabled=0` (default) or `enabled=1` is on.
 
