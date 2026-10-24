@@ -480,3 +480,11 @@ B1 only took memory users away.
 
 Still open: why the restarted Home On Fire does not bring Couchy back (U19). The hand test (open Couchy from the
 app list, then press Home) answers it.
+
+### Hand test and stream quality (DIRECT)
+
+- Couchy reopened from the app list, then Home brought Couchy back and it worked. **U19 answered:** Home On Fire's
+  redirect works again as soon as Couchy is running. Recovery after a drop-out is reopening Couchy; no reboot.
+- The Stremio stream was 1080p, not 4K or a remux. So stream quality was not what drove Stremio to 584 MB; its
+  own footprint did (INFERENCE: player, buffers and Stremio's built-in streaming server in one process).
+- The owner's view (DIRECT): this stick is probably not powerful enough for apps like Stremio.
