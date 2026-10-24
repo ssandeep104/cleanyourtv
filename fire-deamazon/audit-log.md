@@ -416,3 +416,6 @@ HOME line has a `name=` prefix, so the line that ran was most likely not the com
 showed `pm list packages -e` containing both Couchy and Home On Fire, with 235 enabled packages (255 installed
 minus 20 disabled). The kept apps are fine. CHECK in 02-plan.md now writes the enabled list to a file through
 `cat` and checks against the file, and also prints the enabled count and the screensaver flag.
+File-based CHECK after B1 (as relayed): 13 kept apps `ok`, HOME and A11Y right, disabled count 20. The relay did
+not include the ENABLED COUNT or SCREENSAVER sections, and gave HOME without the `name=` prefix, so it is not
+yet certain the committed line was the one that ran. Pending: hand checks, reboot, post-reboot CHECK pasted raw.
