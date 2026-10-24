@@ -253,5 +253,6 @@ STATE the next day, after an overnight pause (AUDIT): `installed=true enabled=3`
 known: whether the stick rebooted before this reading, the post-reboot CHECK, and the hand checks.
 Reboot (DIRECT): the owner restarted the stick twice the evening before, then shut it down overnight; the
 `enabled=3` reading was taken after that, so the disable survives reboots. Hand checks (DIRECT): Couchy on Home,
-stock launcher on long-press Home, apps and NordVPN fine. Remote volume and power not mentioned. Pending:
-post-reboot CHECK and the build check.
+stock launcher on long-press Home, apps and NordVPN fine. Remote volume and power not mentioned.
+Post-reboot CHECK (AUDIT): all 13 kept apps `ok`, HOME and A11Y unchanged, disabled count 10; STATE in the same
+sitting `enabled=3`. **A1 passed**, pending only the remote yes/no and the build line.
