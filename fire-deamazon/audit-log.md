@@ -501,3 +501,18 @@ B1 STATE after the reboot (AUDIT): all 7 `installed=true enabled=3`. **Stage B1 
 All 7 `new state: disabled-user`, no refusals: `dp.logger`, `ceviche`, `tv.developer.dataservice`,
 `livedeviceservice`, `privacypassservice`, `wifilocker`, `tv.acr`. STATE: all 7 `installed=true enabled=3`.
 Pending: CHECK (expect disabled 27, enabled 228), hand checks, reboot, CHECK, STATE.
+
+### Third Couchy drop-out, during B2 checks (DIRECT)
+
+While the owner was away from the TV during a break, Couchy dropped out again; reopening Couchy recovered it and it
+has been fine since. No capture. Unlike the first two, no heavy app was reported in front (screensaver off), and it
+came after B2. Whether it was another low-memory kill (Couchy's own aerial video on screen, or something in the
+background) or something B2 changed is not known yet. Dropbox survives a reboot; logcat survives until the next
+reboot, so the B2 reboot is held until the log line has run.
+
+### Netflix question (DIRECT)
+
+The owner does not use Netflix and asks whether it should go. Evidence (AUDIT 0.2): `com.netflix.ninja` held about
+81 MB with no screen open, so it does add weight when it lingers. It is a third-party app (0.4), so a full
+`pm uninstall` works, unlike the system packages. Undo is a reinstall from the Appstore plus signing in again; there
+is no one-line restore. Waiting for the owner's confirmation before CHECK, D1 and the keep list change.
