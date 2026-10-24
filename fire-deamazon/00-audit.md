@@ -14,11 +14,10 @@ and I will split it.
 **Do not paste** a serial number, MAC address, IP address, Wi-Fi name or account email if one shows up.
 None of the commands below should print one; if one does, blur or delete it before pasting.
 
-**Until the plan is ready:** if the stick shows a pending Fire OS update (Settings > My Fire TV > About >
-Check for Updates), do not install it. Some unlock and update-blocking paths only exist on older builds
-(see [ceiling.md](ceiling.md)), so the current build is worth keeping until we know what it is.
-(INFERENCE: the stick may still install an update by itself at a reboot or overnight; we cannot stop that
-from here yet.)
+**Updates:** your build (PS7717) is already past every known unlock and exploit cutoff (see
+[ceiling.md](ceiling.md)), so staying on it gains nothing on that front. Still, don't install a pending
+update by hand until the plan is done: an update can re-enable packages and change which ones are
+protected, and the plan is written against this build.
 
 ---
 
@@ -26,7 +25,10 @@ from here yet.)
 
 AUDIT: multi-line pastes arrive as one line. All batches below are single lines.
 
-## 0.1 Device identity
+## 0.1 Device identity (done)
+
+AUDIT: AFTSS, `sheldon`, Fire OS 7.7.1.7 (PS7717/5741), Android 9 / SDK 28, patch 2026-03-01, `mt8695`,
+verified boot `green`. Kept below for the record.
 
 ```sh
 for p in ro.product.model ro.product.device ro.product.name ro.build.version.name ro.build.display.id ro.build.version.release ro.build.version.sdk ro.build.version.security_patch ro.board.platform ro.boot.verifiedbootstate; do echo "$p = $(getprop $p)"; done

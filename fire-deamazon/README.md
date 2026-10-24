@@ -19,8 +19,8 @@ Provenance labels used in every file:
 | 0. Read-only audit and on-stick backup | [00-audit.md](00-audit.md) | Ready to run |
 | 1. Current-state and gap analysis | `01-gap-analysis.md` | Waits for the audit output |
 | 2. Stages A-D: uninstall, disable, OTA/verification, app lifecycle | `02-plan.md` | Waits for the audit output |
-| Ceiling: what full ownership needs | [ceiling.md](ceiling.md) | General part done; model row waits for the audit |
-| Quit-on-exit research | [lifecycle.md](lifecycle.md) | Done; final commands wait for the SDK level |
+| Ceiling: what full ownership needs | [ceiling.md](ceiling.md) | Done for AFTSS on PS7717: shell-only |
+| Quit-on-exit research | [lifecycle.md](lifecycle.md) | Done; SDK 28, so the recommended per-app restriction is available |
 | Unresolved | [unresolved.md](unresolved.md) | Living list |
 
 ## Fixed constraints (DIRECT)
