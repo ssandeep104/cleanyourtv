@@ -453,3 +453,30 @@ Reading (INFERENCE):
 - The one crash entry decides between those: if it names Couchy, Couchy crashes on start; if it names Stremio,
   the crash is Stremio's frozen playback, and Couchy was removed some other way (most likely a low-memory kill
   while Stremio played).
+
+### Recurrence logs: cause found (AUDIT, as relayed from the full scrollback)
+
+- Dropbox `data_app_crash` 13:30:45: `Process: com.stremio.one`, `TraceHashCode LMK_com.stremio.one_600`. Stremio
+  was **killed by the low-memory killer**, not crashed in its code. At death it held about 584 MB
+  (ResidentSize 550,144 KB plus IonAllocations 47,952 KB) of the stick's 922 MB, and `other_free` was negative
+  (-3135 pages).
+- Main log: 13:30:37 `WIN DEATH` for Couchy's MainActivity; 13:30:38 `Process com.conreo.couchytv (pid 25880) has
+  died: prev LAST`; 13:30:44 `Process io.github.toolicious.homeonfire (pid 1650) has died: vis BFGS` and
+  `Scheduling restart of crashed service io.github.toolicious.homeonfire/.HijackService in 49965ms`; 13:31:34
+  Home On Fire back as pid 29214 (the process CAPTURE saw).
+- Events: `am_low_memory` firing continuously from 13:34 to 13:37 (values 23 to 28): still low on memory after
+  Stremio died.
+
+**The chain:** Stremio's playback grew to more than half the stick's RAM. The low-memory killer removed Couchy
+first (background, "prev"), then Home On Fire (a visible-level bound service, so it went late), then Stremio itself.
+Android restarted Home On Fire's service about 50 seconds later; nothing restarts Couchy. Since then, Home only
+refreshes the stock Home.
+
+This also explains the first incident (INFERENCE): the same chain with the screensaver's video as the heavy app.
+
+**Not caused by the de-Amazon stages** (INFERENCE from the evidence): the kills are of a heavy app outgrowing the
+RAM, the stick already hit its low-memory limit in an older session before any change (pull 4), and stages A and
+B1 only took memory users away.
+
+Still open: why the restarted Home On Fire does not bring Couchy back (U19). The hand test (open Couchy from the
+app list, then press Home) answers it.
