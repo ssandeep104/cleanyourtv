@@ -307,3 +307,24 @@ either app would normally have matched (INFERENCE from how the listing works on 
 stick). So there is no recorded crash or ANR for Couchy or Home On Fire. That weakens "Couchy crashed" and fits
 a low-memory kill, which leaves no dropbox entry. It does not prove the kill: the restart wiped the evidence for
 that. Next: the entry headers around the incident time, and whether any screensaver or Photos entries exist.
+
+### Incident pull 2: dropbox entry headers (AUDIT)
+
+- About 30 `system_server_wtf` (about 1.3 KB each) at 12:43:07 to 12:43:08.
+- `system_app_wtf` (1630 bytes) at 12:43:10 and 12:43:12.
+- `SYSTEM_BOOT` and `SYSTEM_LAST_KMSG` at 12:43:23: the owner's restart.
+- `system_app_wtf` again, exactly 1630 bytes, at 12:44:52 after the boot; `Log.main` zips at 12:47:56 and 12:52:57.
+
+Reading (INFERENCE):
+
+- The WTF burst lands 15 seconds before the boot record, which is where the shutdown of a restart falls.
+  Services reporting "what a terrible failure" while they are stopped is common during a shutdown, so the burst
+  most likely belongs to the restart, not to the incident, which started minutes earlier.
+- The `system_app_wtf` of exactly 1630 bytes appears both before and after the boot: a repeating report from
+  one system app, likely unrelated. Printing one tells which app.
+- Nothing is recorded in the incident window itself, before the shutdown. That again fits a low-memory kill,
+  which leaves no dropbox entry, rather than a crash or a hang.
+- `SYSTEM_LAST_KMSG` is the kernel log from just before the restart. If this kernel kills processes itself
+  under low memory, its kill lines name the process (Android shortens names to their last 15 characters, for
+  example `conreo.couchytv`, `ious.homeonfire`, `ftv.screensaver`; INFERENCE, not checked on this stick).
+  That would be direct evidence.
