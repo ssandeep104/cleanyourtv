@@ -240,3 +240,9 @@ It joins stage B3: the same-build list disabled it ("what's new" release notes) 
 stayed `installed=true enabled=0`, so nothing changed. This firmware does not take uninstall-for-user (the same
 error as the Fire TV Box in `docs/TROUBLESHOOTING.md` and the Hisense Fire TV list, DOCUMENT). Stage A is
 rewritten as disables in [02-plan.md](02-plan.md).
+
+## Stage A1, disable test (AUDIT)
+
+`com.amazon.tmm.tutorial: Package com.amazon.tmm.tutorial new state: disabled-user`; STATE
+`installed=true enabled=3`. `pm disable-user --user 0` works on this build, so stage B's method is confirmed.
+Pending: restore proof, disable again, CHECK, hand checks, reboot.
