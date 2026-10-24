@@ -24,6 +24,18 @@ So the target becomes: **an app you leave cannot keep doing work, and quitting f
 | `am kill <pkg>` | Kills an app's process only if it is in the background; safe, no data loss. | Useful as a manual "quit" from atvTools. |
 | `am force-stop <pkg>` | Hard stop: process, services, alarms. Keeps data and logins. | The true "fully quit". Manual from atvTools, or from the Settings app page. Do not use it on Home On Fire: a force-stop switches its accessibility service off until you turn it on again. |
 
+## Baseline measurement (first step of stage D, before any change)
+
+Whether apps linger after you back out is not measured yet (DIRECT: audit 0.2 ran with YouTube open, so
+it does not count). Stage D starts with a before/after on your normal habit (Back out, no force-stop):
+
+1. Open YouTube, play a few seconds, back out to Couchy with Back, no force-stop.
+2. Open Stremio and wait about a minute.
+3. Run one line that prints YouTube's process state and memory (written in stage D, one paste).
+4. Repeat 3 after the change, with the same steps 1 and 2.
+
+The change is kept only if the numbers show it helps.
+
 ## Recommendation (stage D of the plan)
 
 1. Apply `RUN_ANY_IN_BACKGROUND ignore` to the five apps above, using the exact package names from

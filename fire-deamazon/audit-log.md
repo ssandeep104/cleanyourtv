@@ -17,7 +17,8 @@ Biggest processes at the time (PSS), grouped:
 
 | Group | Processes | PSS |
 |---|---|---|
-| Your apps left running in the background | `com.amazon.firetv.youtube` 106 MB, `com.netflix.ninja` 81 MB | 187 MB |
+| YouTube, open in front at the time (DIRECT) | `com.amazon.firetv.youtube` 106 MB | 106 MB |
+| Netflix, no activity listed (not on screen) | `com.netflix.ninja` 81 MB | 81 MB |
 | Your always-on apps (keep) | `com.nordvpn.android` 104 MB, `com.conreo.couchytv` 28 MB, `io.github.toolicious.homeonfire` 18 MB | 150 MB |
 | Prime Video | `com.amazon.firebat` 97 MB | 97 MB |
 | Alexa and its media stack | `com.amazon.aca` 39 MB, `com.amazon.vizzini` 23 MB, `com.amazon.alexamediaplayer.runtime.ftv` (+`:smbs`) 21 MB, `com.amazon.whad` 7 MB, `com.amazon.tcomm` 6 MB | 96 MB |
@@ -27,7 +28,12 @@ Biggest processes at the time (PSS), grouped:
 
 What it already shows (INFERENCE, to confirm against 0.4 to 0.9):
 
-- YouTube and Netflix stay resident after use: the lifecycle problem in [lifecycle.md](lifecycle.md) is real.
+- YouTube's 106 MB is the open app (DIRECT: it was reopened and paused when 0.2 ran). 0.2 is **not**
+  evidence that YouTube lingers after you leave it. That needs a post-exit measurement, taken in the
+  lifecycle stage (see [lifecycle.md](lifecycle.md), "Baseline measurement").
+- Netflix was resident with no `/ activities` tag, so its process stayed in memory without a screen.
+  That alone does not show it was doing work: Android keeps cached processes until it needs the RAM.
+  Same baseline measurement applies.
 - Prime Video (`firebat`) is running although it is not on the keep list. Question for the owner.
 - Alexa is about 96 MB. Whether voice search is used decides that group. Question for the owner.
 - `com.amazon.device.software.ota` is alive, so update machinery is active on this build.
