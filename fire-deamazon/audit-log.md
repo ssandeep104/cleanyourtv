@@ -630,7 +630,7 @@ It was never seen running in the 0.2 or 0.8 snapshots, so the memory gain is nil
 - What remains resident is the system (launcher, `device.services`, `device.messaging`, input, Bluetooth, Wi-Fi),
   casting (`tcomm`, `whisperlink`), packages that cannot be disabled (`diode`, `software.ota`; `vizzini` returns at
   boot) and `imp` (kept for the stock Home). None of it can safely go.
-- The 33 remaining packages in the "unresolved" group were not seen running in any snapshot except
+- The 34 remaining packages in the "unresolved" group were not seen running in any snapshot except
   `device.rdmapplication` (about 14 MB RSS, role unknown). Disabling all of them would free little, at real risk.
 - The drop-outs come from one heavy app: Stremio at about 584 MB on a stick with 922 MB total. No disable can
   close a gap that size.
