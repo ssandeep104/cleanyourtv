@@ -264,22 +264,22 @@ OWNER: open YouTube, play a few seconds, press Back to Couchy (no force-stop); o
 (do not play anything). Then:
 
 ```sh
-for p in com.amazon.firetv.youtube com.netflix.ninja com.instagram.airwave com.amazon.firebat com.amazon.vizzini; do echo "== $p =="; pm path $p >/dev/null 2>&1 || { echo "$p not installed, skipped"; continue; }; echo "pid: $(pidof $p)"; dumpsys meminfo $p | grep -m1 -E "TOTAL|No process"; echo "services: $(dumpsys activity services $p | grep -c ServiceRecord)"; echo "bg: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
+for p in com.amazon.firetv.youtube com.instagram.airwave com.amazon.firebat com.amazon.vizzini; do echo "== $p =="; pm path $p >/dev/null 2>&1 || { echo "$p not installed, skipped"; continue; }; echo "pid: $(pidof $p)"; dumpsys meminfo $p | grep -m1 -E "TOTAL|No process"; echo "services: $(dumpsys activity services $p | grep -c ServiceRecord)"; echo "bg: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
 ```
 Expected per app: a pid or empty, memory or `No process found`, a service count, and `bg:` showing `allow` or
-`default`. Netflix prints `not installed, skipped` if step N removed it.
+`default`.
 
-## Step D1: stop background work for YouTube, Netflix (if kept), Instagram and Prime Video
+## Step D1: stop background work for YouTube, Instagram and Prime Video
 
 Restore (save first):
 
 ```sh
-echo "== RESTORE (allow background) =="; for p in com.amazon.firetv.youtube com.netflix.ninja com.instagram.airwave com.amazon.firebat; do pm path $p >/dev/null 2>&1 || { echo "$p not installed, skipped"; continue; }; cmd appops set $p RUN_ANY_IN_BACKGROUND allow; echo "$p: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
+echo "== RESTORE (allow background) =="; for p in com.amazon.firetv.youtube com.instagram.airwave com.amazon.firebat; do pm path $p >/dev/null 2>&1 || { echo "$p not installed, skipped"; continue; }; cmd appops set $p RUN_ANY_IN_BACKGROUND allow; echo "$p: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
 ```
 Change:
 
 ```sh
-echo "== RESTRICT BACKGROUND =="; for p in com.amazon.firetv.youtube com.netflix.ninja com.instagram.airwave com.amazon.firebat; do pm path $p >/dev/null 2>&1 || { echo "$p not installed, skipped"; continue; }; cmd appops set $p RUN_ANY_IN_BACKGROUND ignore; echo "$p: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
+echo "== RESTRICT BACKGROUND =="; for p in com.amazon.firetv.youtube com.instagram.airwave com.amazon.firebat; do pm path $p >/dev/null 2>&1 || { echo "$p not installed, skipped"; continue; }; cmd appops set $p RUN_ANY_IN_BACKGROUND ignore; echo "$p: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
 ```
 Expected: `RUN_ANY_IN_BACKGROUND: ignore` for each installed app. Then repeat the D0 OWNER steps and the D0
 MEASURE block, and ask the OWNER: YouTube and Prime Video still signed in; casting from the phone to YouTube still

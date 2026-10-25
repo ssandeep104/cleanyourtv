@@ -516,3 +516,23 @@ The owner does not use Netflix and asks whether it should go. Evidence (AUDIT 0.
 81 MB with no screen open, so it does add weight when it lingers. It is a third-party app (0.4), so a full
 `pm uninstall` works, unlike the system packages. Undo is a reinstall from the Appstore plus signing in again; there
 is no one-line restore. Waiting for the owner's confirmation before CHECK, D1 and the keep list change.
+
+## Runbook run by the owner's local agent, through C0 (DIRECT, relayed by Sonny)
+
+The owner ran 03-runbook.md steps R0 to C0 through a local Codex agent with a phone harness. Reported complete
+through C0 with the final owner checks passed; nothing after C0 has run. The step-by-step results log has not been
+shared here.
+
+Fresh read-only snapshot, 2026-10-25 about 05:01 CT (DIRECT, as relayed):
+
+- Build `Fire OS 7.7.1.7 (PS7717/5741)`, unchanged.
+- ENABLED 204, DISABLED 50. 27 after B2 plus B3 9, B4 4, B5 5, B6 5 = 50, so B3 to B6 had no refusals.
+  Installed 254 = 204 + 50.
+- Netflix fully uninstalled: absent from `pm list packages` and `pm list packages -u` (step N).
+- HOME stock launcher activity; A11Y `HijackService`; `screensaver_enabled` 0; MemAvailable about 208 MB (was
+  about 158 MB at the audit).
+- C0: `package_verifier_enable` 1; `PACKAGE_NEEDS_VERIFICATION` resolves to `com.amazon.adep` (two receivers);
+  `adep` `enabled=0`; `application.compatibility.enforcer` `enabled=0`, not a verification receiver.
+- Not run: C1 (the three OTA packages at default), B7, stage D (`firebat` at default).
+- `com.amazon.vizzini` reads `enabled=1`, not `0`. `1` is an explicit enable, which normally means something set
+  it: a B7 trial plus its restore, or Fire OS re-enabling it. Open question (U21).

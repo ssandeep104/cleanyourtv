@@ -20,14 +20,13 @@ was changed without harm on the same model and build in this repo (DOCUMENT,
 Paste **CHECK** (same line every stage):
 
 ```sh
-F=/sdcard/deamazon/chk.txt; pm list packages -e | cat > $F; echo "== KEEP =="; for p in com.conreo.couchytv io.github.toolicious.homeonfire com.amazon.tv.launcher com.amazon.firehomestarter com.amazon.imp com.stremio.one com.amazon.firetv.youtube com.esaba.downloader com.amazon.cloud9 com.netflix.ninja com.instagram.airwave com.nordvpn.android dev.vodik7.atvtoolsserver; do grep -qx "package:$p" $F && echo "ok $p" || echo "PROBLEM $p"; done; echo "== ENABLED COUNT =="; wc -l < $F; echo "== HOME =="; cmd package resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME | grep -m1 "name="; echo "== A11Y =="; settings get secure enabled_accessibility_services; echo "== DISABLED COUNT =="; pm list packages -d | wc -l; echo "== SCREENSAVER =="; settings get secure screensaver_enabled
+F=/sdcard/deamazon/chk.txt; pm list packages -e | cat > $F; echo "== KEEP =="; for p in com.conreo.couchytv io.github.toolicious.homeonfire com.amazon.tv.launcher com.amazon.firehomestarter com.amazon.imp com.stremio.one com.amazon.firetv.youtube com.esaba.downloader com.amazon.cloud9 com.instagram.airwave com.nordvpn.android dev.vodik7.atvtoolsserver; do grep -qx "package:$p" $F && echo "ok $p" || echo "PROBLEM $p"; done; echo "== ENABLED COUNT =="; wc -l < $F; echo "== HOME =="; cmd package resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME | grep -m1 "name="; echo "== A11Y =="; settings get secure enabled_accessibility_services; echo "== DISABLED COUNT =="; pm list packages -d | wc -l; echo "== SCREENSAVER =="; settings get secure screensaver_enabled
 ```
 CHECK writes the enabled list to `/sdcard/deamazon/chk.txt` through the `cat` pipe and checks each app against
 that file (AUDIT, B1: an in-memory version of this check once reported every kept app missing while
 `pm list packages -e` showed them all present; the file method is the one proven by the backup in 0.3).
 
-Expected: `ok` for all 13 apps (no `PROBLEM`), ENABLED COUNT equal to 255 minus the disabled count (235 after
-B1), SCREENSAVER `0`, HOME names `com.amazon.tv.launcher.ui.HomeActivity_vNext`,
+Expected: `ok` for all 12 apps (13 until Netflix was uninstalled in runbook step N) (no `PROBLEM`), ENABLED COUNT equal to 254 minus the disabled count (255 before Netflix was uninstalled), SCREENSAVER `0`, HOME names `com.amazon.tv.launcher.ui.HomeActivity_vNext`,
 A11Y names `io.github.toolicious.homeonfire/.HijackService`, and a disabled count that moves as the stage says
 (up by the batch size after each A, B and C1 batch, unchanged otherwise; 9 at the start). Then paste the stage's own **STATE** line (the end of each change and restore line prints it too).
 
@@ -41,7 +40,7 @@ Then by hand, on the TV:
 
 1. Press **Home**: Couchy comes up.
 2. **Long-press Home**: the stock Amazon launcher opens (your escape hatch). Press Home again: back to Couchy.
-3. Open YouTube, Netflix and Stremio for a few seconds each.
+3. Open YouTube and Stremio for a few seconds each.
 4. NordVPN shows connected.
 5. The remote's volume and power buttons still work.
 
@@ -258,8 +257,8 @@ Then CHECK, hand checks, plus: Settings > My Fire TV > About opens (do not press
 
 ## Stage D: app lifecycle (quit on exit)
 
-Background in [lifecycle.md](lifecycle.md). Applies to YouTube, Netflix, Instagram and Prime Video first; Stremio and Silk
-only after these four behave. MEASURE also prints `vizzini` (Alexa voice) so its idle cost is on record.
+Background in [lifecycle.md](lifecycle.md). Applies to YouTube, Instagram and Prime Video first (Netflix is uninstalled); Stremio and Silk
+only after these three behave. MEASURE also prints `vizzini` (Alexa voice) so its idle cost is on record.
 
 ### D0: baseline, before any change
 
@@ -267,25 +266,25 @@ On the TV: open YouTube, play a few seconds, press Back until you are on Couchy 
 and wait one minute. Then paste **MEASURE**:
 
 ```sh
-for p in com.amazon.firetv.youtube com.netflix.ninja com.instagram.airwave com.amazon.firebat com.amazon.vizzini; do echo "== $p =="; echo "pid: $(pidof $p)"; dumpsys meminfo $p | grep -m1 -E "TOTAL|No process"; echo "services: $(dumpsys activity services $p | grep -c ServiceRecord)"; echo "bg: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
+for p in com.amazon.firetv.youtube com.instagram.airwave com.amazon.firebat com.amazon.vizzini; do echo "== $p =="; echo "pid: $(pidof $p)"; dumpsys meminfo $p | grep -m1 -E "TOTAL|No process"; echo "services: $(dumpsys activity services $p | grep -c ServiceRecord)"; echo "bg: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
 ```
 Expected per app: a pid or empty, memory or `No process found`, a count of running services, and the
 background setting (`allow` or `default` now).
 
-### D1: stop background work for the four apps
+### D1: stop background work for the three apps
 
 Restore (save first):
 
 ```sh
-echo "== RESTORE (allow background) =="; for p in com.amazon.firetv.youtube com.netflix.ninja com.instagram.airwave com.amazon.firebat; do cmd appops set $p RUN_ANY_IN_BACKGROUND allow; echo "$p: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
+echo "== RESTORE (allow background) =="; for p in com.amazon.firetv.youtube com.instagram.airwave com.amazon.firebat; do cmd appops set $p RUN_ANY_IN_BACKGROUND allow; echo "$p: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
 ```
 Change:
 
 ```sh
-echo "== RESTRICT BACKGROUND =="; for p in com.amazon.firetv.youtube com.netflix.ninja com.instagram.airwave com.amazon.firebat; do cmd appops set $p RUN_ANY_IN_BACKGROUND ignore; echo "$p: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
+echo "== RESTRICT BACKGROUND =="; for p in com.amazon.firetv.youtube com.instagram.airwave com.amazon.firebat; do cmd appops set $p RUN_ANY_IN_BACKGROUND ignore; echo "$p: $(cmd appops get $p RUN_ANY_IN_BACKGROUND)"; done
 ```
 Expected: `RUN_ANY_IN_BACKGROUND: ignore` for each. Then repeat the D0 steps and MEASURE, and check by hand:
-YouTube, Netflix and Prime Video are still signed in, and casting from your phone to YouTube still starts playback. Reboot,
+YouTube and Prime Video are still signed in, and casting from your phone to YouTube still starts playback. Reboot,
 MEASURE again (the setting should still read `ignore`).
 
 ### D2: one-tap full quit (snippets, no change to the system)
@@ -294,9 +293,6 @@ Save each as its own atvTools snippet and use it whenever you want an app fully 
 
 ```sh
 am force-stop com.amazon.firetv.youtube; echo "stopped com.amazon.firetv.youtube"
-```
-```sh
-am force-stop com.netflix.ninja; echo "stopped com.netflix.ninja"
 ```
 ```sh
 am force-stop com.instagram.airwave; echo "stopped com.instagram.airwave"
@@ -308,6 +304,42 @@ am force-stop com.amazon.firebat; echo "stopped com.amazon.firebat"
 am force-stop com.stremio.one; echo "stopped com.stremio.one"
 ```
 Never make one for Home On Fire (a force-stop switches its accessibility service off), Couchy or NordVPN.
+
+## Proposals after C0 (decisions for the owner; nothing runs until decided)
+
+### C0 result (AUDIT, 2026-10-25 snapshot)
+
+`package_verifier_enable` = `1`. The receivers for `PACKAGE_NEEDS_VERIFICATION` resolve to `com.amazon.adep`
+(two receivers): on this build, adep is Android's install-time package verifier. `adep` is `enabled=0`
+(default, on). `com.amazon.application.compatibility.enforcer` is `enabled=0` and is not a verification receiver.
+
+### Options for app verification
+
+| Option | What it does | Risk on this build | Undo |
+|---|---|---|---|
+| 1. Leave as is | Amazon's verifier keeps checking each install | None new. Your current apps install and run today | Nothing to undo |
+| 2. Verifier off (`package_verifier_enable 0`) **(recommended, as a trial)** | Android stops asking adep to approve installs | Low: one standard Android setting. It does not stop a launch-time block if Amazon enforces one some other way (INFERENCE: the late-2025 full-screen blocks came at launch). Fire OS may reset it at boot: the reboot check shows that | `settings put global package_verifier_enable 1` |
+| 3. Disable `com.amazon.adep` | Removes the verifier itself | Higher: Android may then wait for a verifier that never answers on each install (a delay or a failed install), Appstore updates may break, and adep's other roles are unknown; this repo's Fire OS 8 list left it alone | `pm enable --user 0 com.amazon.adep` |
+| 2 and 3 together | Both | The risks of 3 | Both undo lines |
+
+Recommendation: option 2 now, option 3 not without a reason (a real block). The enforcer stays untouched (U15).
+
+C2 restore (save first):
+
+```sh
+settings put global package_verifier_enable 1; echo "verifier: $(settings get global package_verifier_enable)"
+```
+
+C2 change:
+
+```sh
+settings put global package_verifier_enable 0; echo "verifier: $(settings get global package_verifier_enable)"
+```
+
+Expected: `verifier: 0`. Then CHECK, and one real install to prove installs still work (owner: update or install one
+small app from Downloader or the Appstore). Reboot, then read it again with
+`echo "verifier: $(settings get global package_verifier_enable)"`: `0` means it held; `1` means Fire OS resets it at
+boot, and there is nothing more the shell can do.
 
 ## Verdicts: Prime Video and Alexa
 
