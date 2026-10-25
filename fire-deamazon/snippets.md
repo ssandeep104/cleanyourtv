@@ -1,12 +1,13 @@
 # atvTools snippets
 
-To be saved in atvTools on the phone (05-final-runbook.md, Section 2, checks which exist). Each is one line and safe to run any time.
+To be saved in atvTools on the phone (05-final-runbook.md, step 7, checks which exist). Each is one line and safe to run any time.
 
 | Name | What it does |
 |---|---|
 | Quit YouTube | Closes YouTube fully; keeps its sign-in |
 | Quit Instagram | Closes Instagram fully; keeps its sign-in |
 | Quit Stremio | Closes Stremio fully; keeps its sign-in |
+| Restore D1 | Undoes D1: lets YouTube, Instagram (and Prime Video) work in the background again; the line is in 05-final-runbook.md, step 2 |
 | Bring Couchy back | After a drop-out (stock Home on screen, Home does nothing): starts Couchy so Home works again |
 
 Quit YouTube:

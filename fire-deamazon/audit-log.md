@@ -592,8 +592,9 @@ dry-run against stubbed shell commands here; they have not run on the stick.
 
 ## Reconciliation after the Codex run (DIRECT, verified by Sonny from the stick, 2026-10-25 17:52 to 17:54 CT)
 
-Codex ran 04-continuation-runbook.md in the morning while the owner slept, then crashed; its log is lost. The
-state below comes from read-only shell snapshots, not from Codex's account.
+Codex ran 04-continuation-runbook.md in the morning while the owner slept. The run ended when the owner's
+**phone harness failed** (corrected, DIRECT: it was not a Codex crash), and the run's log was lost. The state below
+comes from read-only shell snapshots, not from Codex's account.
 
 - Build `PS7717.5741N`: the staged update did not install.
 - 200 enabled / 53 disabled / 253 installed / 16 third-party. Against the pre-run baseline (203 / 51 / 254 / 17)
@@ -638,3 +639,12 @@ It was never seen running in the 0.2 or 0.8 snapshots, so the memory gain is nil
 So Codex's pushback holds: further disables will not improve performance noticeably. The disable phase is done.
 The remaining levers are outside package lists: Stremio's own footprint (U20), Couchy's video background (a still
 image), the stick on a wall adapter, and hardware with 2 GB of RAM.
+
+### Corrections and execution change (DIRECT, 2026-10-25)
+
+- The morning run ended because the owner's phone harness failed, not because Codex crashed (corrected above).
+- From here on the owner runs every remaining step by hand in atvTools, one line at a time, with Sonny handing over
+  each line; Codex and the phone harness are out of the loop. D1 for YouTube and Instagram is being applied in
+  chat with the 02-plan.md D1 line (which also covers the disabled `firebat`, harmlessly).
+  [05-final-runbook.md](05-final-runbook.md) is rewritten for manual execution: verification, the casting check,
+  the reboot persistence check, the restore line, and D2.
