@@ -542,3 +542,12 @@ Fresh read-only snapshot, 2026-10-25 about 05:01 CT (DIRECT, as relayed):
 `settings put global package_verifier_enable 0`; the immediate read printed `0`. `adep` and the compatibility
 enforcer untouched. Pending: one real install to prove installs still work, and whether Fire OS resets the
 setting at boot (checked with C1's reboot).
+
+## B7 trial: Alexa voice core returns at boot (DIRECT, from the owner's Codex session log)
+
+The B7 trial ran during the Codex run. `com.amazon.vizzini` was disabled (`enabled=3`); B7's CHECK passed at
+203 enabled / 51 disabled, and YouTube and Stremio opened. After B7's reboot, Fire OS had re-enabled it
+(`enabled=1`) and the counts were back at 204 / 50. The saved B7 restore then ran as the runbook directs and
+succeeded. **B7 closed:** this build re-enables the voice core at boot, as on four other Fire TV builds in this
+repo. `vizzini` stays enabled, and its about 23 MB counts against the shell-only ceiling. Its `enabled=1` is
+explained (U21 resolved).

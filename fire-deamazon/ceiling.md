@@ -47,6 +47,8 @@ What shell-only means for your goals, plainly:
 - Amazon's app blacklist: cannot be switched off with confidence from the shell (U2).
 - **Uninstall for user 0 is refused** on this build (AUDIT, stage A1: `DELETE_FAILED_INTERNAL_ERROR`). Amazon
   packages can be disabled, not removed for your user; a disabled package cannot run, but stays listed.
+- **Alexa voice core cannot stay off:** `com.amazon.vizzini` was disabled in B7 and Fire OS re-enabled it at the
+  next boot (AUDIT). It stays, at about 23 MB resident.
 - Everything else in the goal (disable, background limits) is reachable.
 
 ## General background
