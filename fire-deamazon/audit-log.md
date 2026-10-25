@@ -536,3 +536,9 @@ Fresh read-only snapshot, 2026-10-25 about 05:01 CT (DIRECT, as relayed):
 - Not run: C1 (the three OTA packages at default), B7, stage D (`firebat` at default).
 - `com.amazon.vizzini` reads `enabled=1`, not `0`. `1` is an explicit enable, which normally means something set
   it: a B7 trial plus its restore, or Fire OS re-enabling it. Open question (U21).
+
+## C2: install verifier off (DIRECT)
+
+`settings put global package_verifier_enable 0`; the immediate read printed `0`. `adep` and the compatibility
+enforcer untouched. Pending: one real install to prove installs still work, and whether Fire OS resets the
+setting at boot (checked with C1's reboot).
