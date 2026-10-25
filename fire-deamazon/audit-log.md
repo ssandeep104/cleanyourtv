@@ -589,3 +589,52 @@ is inconclusive) and is corroborated by Couchy's pid, the focused window and Hom
 prints one definite token (`TUN0_UP`, `TUN0_PRESENT_NOT_UP` or `TUN0_ABSENT`); and Section 2 always removes the test
 app, whichever attempt installed it, and re-verifies counts before Section 3. The polling and VPN lines were
 dry-run against stubbed shell commands here; they have not run on the stick.
+
+## Reconciliation after the Codex run (DIRECT, verified by Sonny from the stick, 2026-10-25 17:52 to 17:54 CT)
+
+Codex ran 04-continuation-runbook.md in the morning while the owner slept, then crashed; its log is lost. The
+state below comes from read-only shell snapshots, not from Codex's account.
+
+- Build `PS7717.5741N`: the staged update did not install.
+- 200 enabled / 53 disabled / 253 installed / 16 third-party. Against the pre-run baseline (203 / 51 / 254 / 17)
+  the run's whole footprint is two disables and one full uninstall; nothing else moved, nothing re-enabled.
+- New disables: `com.amazon.firebat` (Prime Video) and `com.amazon.spiderpork`. Removed: `com.streamdev.aiostreamer`
+  (AIO Streamer), fully uninstalled.
+- `package_verifier_enable` still 0; `forcedotaupdater.v2` still disabled; A11Y `HijackService`; HOME the stock
+  launcher activity.
+- D1 not applied: YouTube and Instagram read `No operations. Default mode: allow`; `firebat` default. D2 unknown
+  (atvTools snippets are app-side, not device state).
+- Persistence: uptime showed a boot at about 16:44 CT, before the snapshot, so the verifier setting, the C1 disable
+  and both new disables survived a real reboot on an unchanged build.
+
+Owner decisions (final): `firebat` stays disabled (Prime Video off). AIO Streamer stays uninstalled.
+
+What is still open: D1 (never landed) and D2 (unknown). Everything else is done or decided. Not work items:
+the staged update can still install on its own (shell-only ceiling; re-check state afterwards), Q3 (Appstore,
+kept by default), U20 (Stremio's memory). Finish: [05-final-runbook.md](05-final-runbook.md).
+
+### `com.amazon.spiderpork` identified
+
+It is **Amazon Luna**, Amazon's cloud gaming app (DOCUMENT: APKMirror lists `com.amazon.spiderpork` as "Amazon Luna
+(Fire TV)"; this repo's TCL Fire TV list labels it "Amazon Luna"; one community tool calls it a background analytics
+service, unverified). It was in this plan's "unresolved, role unclear" group, so not in any batch. Disabled without
+reported harm on two Fire TV lists in this repo: `examples/insignia-ns55f301na25/` (Fire OS 7, PS7715, the build
+family closest to this stick) and `examples/tcl-58s571f-fire-tv/` (Fire OS 8); a community guide uninstalls it for
+the user. Its games-hub tile (`com.amazon.gamehub`) was already disabled in stage A2b. Not near any protected
+function (Home, Settings, input, remote, Wi-Fi, installer, sign-in). Disabling it is neutral; it stays disabled.
+It was never seen running in the 0.2 or 0.8 snapshots, so the memory gain is nil.
+
+### Is the disable phase done? Yes
+
+- MemAvailable rose from about 158 MB (audit) to about 208 MB after B6: the disables freed roughly 50 MB.
+- What remains resident is the system (launcher, `device.services`, `device.messaging`, input, Bluetooth, Wi-Fi),
+  casting (`tcomm`, `whisperlink`), packages that cannot be disabled (`diode`, `software.ota`; `vizzini` returns at
+  boot) and `imp` (kept for the stock Home). None of it can safely go.
+- The 33 remaining packages in the "unresolved" group were not seen running in any snapshot except
+  `device.rdmapplication` (about 14 MB RSS, role unknown). Disabling all of them would free little, at real risk.
+- The drop-outs come from one heavy app: Stremio at about 584 MB on a stick with 922 MB total. No disable can
+  close a gap that size.
+
+So Codex's pushback holds: further disables will not improve performance noticeably. The disable phase is done.
+The remaining levers are outside package lists: Stremio's own footprint (U20), Couchy's video background (a still
+image), the stick on a wall adapter, and hardware with 2 GB of RAM.
