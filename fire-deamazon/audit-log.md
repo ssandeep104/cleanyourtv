@@ -578,3 +578,14 @@ Reading (INFERENCE): the warning is advisory and does not prove the staged updat
 TV-USB power means the stick loses power whenever the TV turns off or sleeps, which can interrupt any step and,
 in the worst case, an update while it installs. 04-continuation-runbook.md now treats a power loss as a reboot and
 tells Codex to keep the TV on. Moving the stick to Amazon's wall adapter removes both risks; that is the owner's call.
+
+### Continuation runbook revised after Codex's pre-run review (DIRECT, checked by Sonny)
+
+Four gaps fixed in 04-continuation-runbook.md: a Section 0 pre-flight that reads and records the BASELINE (build,
+counts, verifier, C1 state) and explains why it differs from Codex's last endpoint (C2 and C1 were run by the
+owner afterwards); every later count expressed as "counts = baseline", with an explicit baseline update if
+`forcedotaupdater.v2` returns at boot; the Home check polls every 3 s for up to 15 s (an early stock-launcher sample
+is inconclusive) and is corroborated by Couchy's pid, the focused window and Home On Fire's service; the VPN check
+prints one definite token (`TUN0_UP`, `TUN0_PRESENT_NOT_UP` or `TUN0_ABSENT`); and Section 2 always removes the test
+app, whichever attempt installed it, and re-verifies counts before Section 3. The polling and VPN lines were
+dry-run against stubbed shell commands here; they have not run on the stick.
