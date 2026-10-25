@@ -6,7 +6,7 @@ Each item below is kept out of every batch until it is verified.
 |---|---|---|---|
 | U1 | ~~Model, codename, Fire OS build, SDK~~ | Resolved by audit 0.1: AFTSS `sheldon`, Fire OS 7.7.1.7 PS7717, SDK 28 | Done |
 | U2 | Which package enforces Amazon's app blacklist on Fire OS 7/8 | No source names it; reports say it matches package names against Amazon's cloud list. This repo's 4K 2023 list left `com.amazon.adep` (package verification) and `com.amazon.platform.fdra` (package allowlisting) alone. | Audit 0.9, then `dumpsys package` on each candidate; even then, disabling may be refused or may break installs |
-| U3 | Whether the OTA packages can be disabled on this build | Protected on some Fire OS 7 builds (`afteu014`), not tried on others | Audit 0.9 shows them; a refused `pm disable-user` is a no-op, so the attempt itself is safe |
+| U3 | ~~Whether the OTA packages can be disabled on this build~~ | Resolved by C1: `forcedotaupdater.v2` yes; `software.ota` and `software.ota.override` are protected. An update is already staged and will install | Done; shell-only limit |
 | U4 | ~~Whether the system-user exploit (tier 2) applies~~ | Resolved: does not apply, PS7717 is newer than PS7704 | Done |
 | U5 | A helper app for a "Quit?" prompt on Back | None found that is verified on Fire TV | Owner names one, or we accept the gap in [lifecycle.md](lifecycle.md) |
 | U6 | Home On Fire internals (what it watches, whether a second accessibility service conflicts) | Project page not found in research | Owner shares its link or the app's about screen |

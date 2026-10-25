@@ -42,8 +42,8 @@ What shell-only means for your goals, plainly:
   (`examples/amazon-fire-tv-stick-lite-2020/`, AFTSS, PS7717/5741): `pm disable-user` refused
   `com.amazon.minerva.client.api`, `com.amazon.device.logmanager`, `com.amazon.device.crashmanager`,
   `com.amazon.diode` and `com.fireos.usagestats.proxy` there. Expect the same here (DOCUMENT).
-- Updates: we try to disable the OTA packages; if Fire OS refuses, updates keep arriving and may
-  re-enable packages. Batch 0.9 tells us which case applies.
+- **Updates cannot be stopped (AUDIT, C1):** `com.amazon.device.software.ota` and `.ota.override` are protected;
+  only `forcedotaupdater.v2` could be disabled. An update was already staged and will install on its own.
 - Amazon's app blacklist: cannot be switched off with confidence from the shell (U2).
 - **Uninstall for user 0 is refused** on this build (AUDIT, stage A1: `DELETE_FAILED_INTERNAL_ERROR`). Amazon
   packages can be disabled, not removed for your user; a disabled package cannot run, but stays listed.

@@ -551,3 +551,18 @@ The B7 trial ran during the Codex run. `com.amazon.vizzini` was disabled (`enabl
 succeeded. **B7 closed:** this build re-enables the voice core at boot, as on four other Fire TV builds in this
 repo. `vizzini` stays enabled, and its about 23 MB counts against the shell-only ceiling. Its `enabled=1` is
 explained (U21 resolved).
+
+## C1 executed, partial (DIRECT)
+
+`com.amazon.tv.forcedotaupdater.v2` disabled (`enabled=3`). `com.amazon.device.software.ota.override` and
+`com.amazon.device.software.ota` refused (`Cannot disable a protected package`), unchanged at `enabled=0`. Counts
+now 203 enabled / 51 disabled. Pre-check (the owner's About screenshots): an update is already staged ("Update to
+install: System components"), and About says it begins automatically the next time the stick is not in use. The
+owner did not press Install, and dismissed a USB Power Warning (the stick is powered from the TV's USB port).
+
+Reading (INFERENCE): the two packages that install updates are protected, so the shell cannot stop this staged
+update; it will most likely install at an idle moment or a reboot. When it does, the build changes and some
+disabled packages may come back; the plan's stages are then re-checked against the new build. The USB power
+warning means the TV's port may supply less than the stick wants; Amazon's wall adapter avoids that.
+
+Remaining work handed to the owner's Codex as one job: [04-continuation-runbook.md](04-continuation-runbook.md).
