@@ -1,5 +1,7 @@
 # De-Amazon plan, in stages
 
+> **Status: complete (2026-10-25).** Kept as the record. Final state in [audit-log.md](audit-log.md), "Project complete".
+
 Written from [01-gap-analysis.md](01-gap-analysis.md). Every package in a batch is on this stick (AUDIT 0.5) and
 was changed without harm on the same model and build in this repo (DOCUMENT,
 `examples/amazon-fire-tv-stick-lite-2020/`), unless the stage says otherwise. Nothing else is in a batch.

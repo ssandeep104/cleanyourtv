@@ -1,5 +1,7 @@
 # Final runbook: D1 checks and D2 snippets (manual, one line at a time)
 
+> **Status: complete (2026-10-25).** Kept as the record. Final state in [audit-log.md](audit-log.md), "Project complete".
+
 **Who runs it:** Sandeep, by hand: each line pasted into the atvTools ADB shell on the iPhone, one at a time,
 with Sonny handing over the next line after reading the output. No agent, no phone automation. Each code block is
 one line (atvTools flattens multi-line pastes); paste it whole. Steps marked **Remote** are done by Sandeep on the

@@ -12,16 +12,20 @@ Provenance labels used in every file:
 - **INFERENCE**: reasoned, not verified on this stick.
 - **UNRESOLVED**: not verified, so kept out of every batch.
 
-## Status
+## Status: COMPLETE (2026-10-25)
+
+Final state and the standing note for updates: [audit-log.md](audit-log.md), "Project complete". If the
+staged Fire OS update ever installs, run a fresh CHECK and re-verify the counts (200 enabled, 53 disabled), the
+disables, the verifier setting and D1 before anything else; an update may turn things back on.
 
 | Step | File | State |
 |---|---|---|
 | 0. Read-only audit and on-stick backup | [00-audit.md](00-audit.md), results in [audit-log.md](audit-log.md) | Complete (0.0 to 0.9, 0.5c, 0.5d) |
 | 1. Current-state and gap analysis | [01-gap-analysis.md](01-gap-analysis.md) | Done |
-| 2. Stages A-D: disable apps, disable services, OTA/verification, app lifecycle | [02-plan.md](02-plan.md) | Disable phase done (A, B1 to B7, C1 partial, C2; plus firebat, spiderpork; Netflix and AIO Streamer removed). Open: D1, D2 |
+| 2. Stages A-D: disable apps, disable services, OTA/verification, app lifecycle | [02-plan.md](02-plan.md) | Complete: A, B1 to B7, C1 (partial, shell ceiling), C2, D1, D2; plus firebat and spiderpork disabled; Netflix and AIO Streamer removed |
 | Runbook for a phone-driving agent (all remaining steps) | [03-runbook.md](03-runbook.md) | Run through C0 by the owner's agent; C1 and C2 applied by hand |
 | Continuation runbook (C1 checks, C2 proof, stage D, final owner checks) | [04-continuation-runbook.md](04-continuation-runbook.md) | Ran in part until the phone harness failed; reconciled in audit-log |
-| Final runbook (D1 checks, casting, persistence, D2), manual | [05-final-runbook.md](05-final-runbook.md), snippets in [snippets.md](snippets.md) | Run by hand, one line at a time |
+| Final runbook (D1 checks, casting, persistence, D2), manual | [05-final-runbook.md](05-final-runbook.md), snippets in [snippets.md](snippets.md) | Complete (run by hand) |
 | Ceiling: what full ownership needs | [ceiling.md](ceiling.md) | Done for AFTSS on PS7717: shell-only |
 | Quit-on-exit research | [lifecycle.md](lifecycle.md) | Done; SDK 28, so the recommended per-app restriction is available |
 | Unresolved | [unresolved.md](unresolved.md) | Living list |

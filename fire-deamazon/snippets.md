@@ -34,4 +34,7 @@ Bring Couchy back:
 monkey -p com.conreo.couchytv -c android.intent.category.LEANBACK_LAUNCHER 1 >/dev/null 2>&1; echo "couchy pid: $(pidof com.conreo.couchytv)"
 ```
 
+A "Quit Prime Video" line (`am force-stop com.amazon.firebat`) was also delivered; it is dormant while Prime Video
+stays disabled.
+
 Never make a quit snippet for Couchy, Home On Fire, NordVPN or atvTools' helper.

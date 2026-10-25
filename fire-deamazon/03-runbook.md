@@ -1,5 +1,7 @@
 # Runbook for a phone-driving agent: remaining stages
 
+> **Status: complete (2026-10-25).** Kept as the record. Final state in [audit-log.md](audit-log.md), "Project complete".
+
 **Who this is for:** an agent that operates the owner's iPhone and types into the atvTools app's ADB shell,
 which is connected to the owner's Fire TV Stick Lite (AFTSS, Fire OS 7.7.1.7, PS7717/5741). It covers everything
 still to do, in order, with the exact commands, what each should print, and what to do when it does not.

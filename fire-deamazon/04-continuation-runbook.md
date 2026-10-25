@@ -1,5 +1,7 @@
 # Continuation runbook: C1 verification, C2 install proof, stage D, final owner checks
 
+> **Status: complete (2026-10-25).** Kept as the record. Final state in [audit-log.md](audit-log.md), "Project complete".
+
 **One job for the owner's local Codex**, which drives the iPhone, types into the atvTools ADB shell connected to
 the Fire TV Stick Lite (AFTSS `sheldon`, Fire OS 7.7.1.7, PS7717/5741), can reboot the stick, launch apps and read
 the TV screen. It replaces the remaining part of [03-runbook.md](03-runbook.md). Background:

@@ -648,3 +648,29 @@ image), the stick on a wall adapter, and hardware with 2 GB of RAM.
   chat with the 02-plan.md D1 line (which also covers the disabled `firebat`, harmlessly).
   [05-final-runbook.md](05-final-runbook.md) is rewritten for manual execution: verification, the casting check,
   the reboot persistence check, the restore line, and D2.
+
+## Project complete (DIRECT, from the stick and the owner, 2026-10-25 evening CT)
+
+Final state:
+
+- Final CHECK clean: 12 of 12 `ok`, no `PROBLEM`; ENABLED 200, DISABLED 53; HOME the stock launcher activity; A11Y
+  `HijackService`; SCREENSAVER 0.
+- D1 applied in chat and verified: `RUN_ANY_IN_BACKGROUND` = `ignore` for YouTube and Instagram. Linger test passed:
+  after YouTube playback, backing out and one minute in Stremio, the YouTube and Instagram processes were gone and
+  Stremio was running. YouTube opens with its sign-in intact; casting from the phone to YouTube worked from the
+  backed-out state; the settings survived a reboot.
+- Post-reboot readback: build still `PS7717.5741N` (the staged update did not install through any of the day's
+  reboots); both appops `ignore`; disabled count 53.
+- D2: the Quit YouTube force-stop line works (pid empty afterwards; the TV returned to Couchy). Quit lines for
+  Instagram, Prime Video (`firebat`) and Stremio were delivered in the same form; the Prime Video one is dormant
+  while Prime Video stays disabled.
+- Owner remote checks passed: Home returns to Couchy; long-press Home opens the stock launcher and back; volume works.
+- Owner's verdict (DIRECT): much faster and smoother, no lag, noticeably lighter.
+
+Not run, and not needed for completion: the C2 install proof (04, Section 2). The verifier stays off; if an install
+ever fails or hangs, `settings put global package_verifier_enable 1` puts it back.
+
+**Standing note:** if the staged update ever installs (the build no longer reads `PS7717/5741`), the follow-up is a
+fresh CHECK, then re-verifying the counts, the disables, the verifier setting and D1, because an update may turn
+things back on. Nothing is redone until that read has been reviewed. The read lines are in
+[05-final-runbook.md](05-final-runbook.md), "Appendix".
