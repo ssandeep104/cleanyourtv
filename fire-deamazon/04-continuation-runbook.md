@@ -16,7 +16,19 @@ the TV screen. It replaces the remaining part of [03-runbook.md](03-runbook.md).
   automatically the next time the stick is not in use. The two packages that install it are protected, so the
   shell cannot stop it. It may install at the reboot in section 1 or at any idle moment. If it does, the build
   changes and this runbook stops (rule 5).
-- The stick is powered from the TV's USB port; a USB Power Warning was shown and dismissed (DIRECT).
+- **Power (DIRECT):** the stick is powered from the TV's USB port, so turning the TV off (or the TV going to
+  standby on its own) cuts the stick's power. When the owner highlighted Install Update on About, Fire OS showed
+  a "USB Power Warning": "USB power may not be sufficient for a system update. We recommend using the included
+  USB cable and Amazon power adapter for best results." Behind it About read "An update is available" and
+  "Update to install: System components". The owner dismissed it with OK and did not press Install.
+  The warning is advisory (INFERENCE): it does not prove the staged update cannot install on this power, so
+  rule 5's build check stays. Two consequences for this runbook:
+  - **Keep the TV on for the whole run.** If the TV switches off or sleeps, the stick loses power: treat it as a
+    reboot (rule 7), run the section 1.4 block first, then re-run the STATE or read line of the section you were
+    in, and log "power loss" with the time.
+  - If the stick loses power while an update is installing, the install is interrupted. Fire OS normally retries
+    it (INFERENCE, not verified on this build), but if the TV screen shows an update or recovery screen, or the
+    stick does not come back within 10 minutes, stop and leave the stick alone for the owner.
 
 ## Rules
 
@@ -121,7 +133,7 @@ and APPS.
 1.6 About re-look (screen only). With the harness: Home, then Settings > My Fire TV > About. Read and log, word
 for word: whether "Install Update" or "Update to install: System components" still shows, and the exact sentence
 about when it installs. **Do not select Install Update or any update item.** Then press Home and run AUTO-HOME.
-If a USB power warning appears, dismiss it and log its text.
+Highlighting Install Update raises the USB Power Warning; if it appears, dismiss it with OK (or Back), never with anything that installs, and log its text.
 
 ## Section 2: C2 install proof (verifier off)
 

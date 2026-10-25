@@ -566,3 +566,15 @@ disabled packages may come back; the plan's stages are then re-checked against t
 warning means the TV's port may supply less than the stick wants; Amazon's wall adapter avoids that.
 
 Remaining work handed to the owner's Codex as one job: [04-continuation-runbook.md](04-continuation-runbook.md).
+
+### USB Power Warning and power setup (DIRECT)
+
+Highlighting Install Update on About raised a "USB Power Warning": "USB power may not be sufficient for a system
+update. We recommend using the included USB cable and Amazon power adapter for best results." Behind it: "An
+update is available", "Update to install: System components". Dismissed with OK; Install not pressed. The stick is
+powered from the TV's USB port, which is also why the TV's power button power-cycles the stick.
+
+Reading (INFERENCE): the warning is advisory and does not prove the staged update cannot install on this power.
+TV-USB power means the stick loses power whenever the TV turns off or sleeps, which can interrupt any step and,
+in the worst case, an update while it installs. 04-continuation-runbook.md now treats a power loss as a reboot and
+tells Codex to keep the TV on. Moving the stick to Amazon's wall adapter removes both risks; that is the owner's call.
