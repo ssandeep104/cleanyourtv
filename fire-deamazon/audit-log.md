@@ -684,3 +684,20 @@ in [06-ota-clear.md](06-ota-clear.md): About wording before and after, one clear
 Open points (U22): Android may refuse to clear a protected package's data, and the update file may live outside the
 app's data, so About decides, not `Success`. It can download again afterwards; a look at About every week or two,
 with a re-clear when "Update to install" returns, joins the standing note. Not run yet.
+
+## Staged-update clear refused (AUDIT, 2026-10-25 about 21:52 CT)
+
+Run over `adb shell` from the owner's Mac (new route, connection authorized). F0 matched the expected state
+(build PS7717/5741, 200 / 53, verifier 0, `software.ota` and `.override` `enabled=0`, `forcedotaupdater.v2`
+`enabled=3`, `ota pid: 1576`, both update-file folders `Permission denied`). F1 was refused:
+`Security exception: Cannot clear data for a protected package: com.amazon.device.software.ota`
+(`PackageManagerShellCommand.runClear`); `ota pid after: 1576`. Nothing changed. Fire OS's protection covers clearing
+data as well as disabling, so the staged update can be neither cleared nor prevented from the shell (U22 resolved).
+
+Standing posture, unchanged: `forcedotaupdater.v2` stays disabled; look at About now and then without pressing
+Install or Check for Updates; if the build ever changes, run a fresh CHECK and re-verify the counts, disables,
+verifier and D1. The periodic re-clear proposed in 06-ota-clear.md is withdrawn.
+
+Note on the new route (INFERENCE): ADB over the network on port 5555 is unencrypted. With both atvTools and the Mac
+authorized, it stays a standing access path on the home network; turning ADB debugging off when it is not needed
+closes it (the owner's choice).

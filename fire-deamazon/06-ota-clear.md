@@ -1,6 +1,22 @@
 # Follow-up: clearing the staged Fire OS update
 
-**Status:** plan, not yet run. Manual, one line at a time, Sandeep in atvTools with Sonny. Each code block is one line.
+**Status: ran 2026-10-25 about 21:52 CT; the clear was REFUSED (AUDIT). Nothing changed.** Run over `adb shell` from
+the owner's Mac (a new route; the steps are the same lines).
+
+## Outcome (AUDIT)
+
+- F0 as expected: `Fire OS 7.7.1.7 (PS7717/5741)`; ENABLED 200; DISABLED 53; `verifier: 0`; `software.ota` and
+  `software.ota.override` `installed=true enabled=0`; `forcedotaupdater.v2` `installed=true enabled=3`; `ota pid: 1576`;
+  `ls /cache` and `ls /data/ota_package` both `Permission denied`.
+- F1 refused: `Security exception: Cannot clear data for a protected package: com.amazon.device.software.ota`
+  (a `SecurityException` from `PackageManagerShellCommand.runClear`). `ota pid after: 1576`, unchanged.
+- F2 and F3 not run (nothing to check).
+
+Conclusion: on this build, Fire OS's package protection covers clearing data as well as disabling. The staged
+update cannot be cleared or prevented from the shell. Re-clearing is not an option, so the standing note below is
+reduced to watching About and re-checking after an update. The rest of this file is kept as the record of the plan.
+
+Original plan follows. Each code block is one line.
 
 ## Why this exists
 
@@ -89,8 +105,9 @@ not remove it, and there is nothing more the shell can do. Report it.
 2. Paste F0's line. Expected: same build, same counts.
 3. **Remote:** About once more: still no "Update to install". Then Home: Couchy.
 
-## Standing note (added)
+## Standing note (after the refusal)
 
-Look at Settings > My Fire TV > About every week or two (never press Install or Check for Updates). If "Update to
-install" is back, run F0 to F3 again. If the build has changed, the update installed: run the standing follow-up
-in [README.md](README.md) instead.
+The forced updater stays disabled. Look at Settings > My Fire TV > About now and then (never press Install or Check
+for Updates); "Update to install" will stay there until the update installs, and there is no shell step against it.
+If the build ever changes, the update installed: run the standing follow-up in [README.md](README.md) (fresh CHECK,
+counts, disables, verifier, D1).

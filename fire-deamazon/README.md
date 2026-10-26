@@ -18,8 +18,9 @@ Final state and the standing note for updates: [audit-log.md](audit-log.md), "Pr
 staged Fire OS update ever installs, run a fresh CHECK and re-verify the counts (200 enabled, 53 disabled), the
 disables, the verifier setting and D1 before anything else; an update may turn things back on.
 
-Follow-up, planned: clearing the staged update with `pm clear` on the update app, and re-clearing it whenever
-About shows "Update to install" again: [06-ota-clear.md](06-ota-clear.md).
+Follow-up tried 2026-10-25: clearing the staged update with `pm clear` was **refused** (protected package), so it
+cannot be cleared from the shell: [06-ota-clear.md](06-ota-clear.md). Standing posture: forced updater disabled,
+a look at About now and then, and the full re-check above if the build ever changes.
 
 | Step | File | State |
 |---|---|---|
