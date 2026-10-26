@@ -752,3 +752,40 @@ Connection saga (DIRECT): after the drop, reconnects failed with `No route to ho
 The final blocker was a wedged adb server on the Mac; `adb kill-server` and a fresh `adb connect` fixed it (now in
 the script's reconnect help). The owner also rebooted the stick in between; About still showed "Install Update"
 afterwards, and this run's build read confirms the staged update did not install.
+
+## Round 2 tuning (DIRECT, relayed by Sonny, 2026-10-26 about 00:05 CT)
+
+Each item approved by the owner one by one, applied over adb from the Mac and verified by readback.
+
+1. `com.amazon.cloud9` (Silk): `RUN_ANY_IN_BACKGROUND` = ignore.
+2. `com.amazon.device.logmanager`, `com.amazon.device.crashmanager`, `com.amazon.diode`, `com.fireos.usagestats.proxy`
+   (the protected telemetry packages that cannot be disabled): `RUN_ANY_IN_BACKGROUND` and `RUN_IN_BACKGROUND` =
+   ignore. `com.amazon.minerva.client.api` is not on this stick (`No UID ... in user 0`); nothing changed for it.
+3. Five new disables: `com.amazon.device_remote_config_sync_service`, `com.amazon.ale`,
+   `com.amazon.providers.contentsupport`, `com.amazon.connectivitydiag`, `com.amazon.katoch`. The other 14 names on
+   the research list were already disabled in round 1. **New baseline: 195 enabled / 58 disabled.**
+4. `com.amazon.venezia` (Appstore): `RUN_ANY_IN_BACKGROUND` = ignore only. Full disable not taken (App Library and
+   icon pipeline coupling).
+5. Settings: `featured_item_video_enabled` and `wifi_scan_always_enabled` were already 0; `ble_scan_always_enabled`
+   was unset and is now 0.
+6. Match Original Frame Rate was already off; no change.
+7. Experiment running: video output Auto to 720p60; the owner is judging feel against softness. Revert: Settings >
+   Display & Sounds > Video Resolution > Auto.
+
+Restore lines (round 2): `pm enable --user 0 <package>` for each of the five; `cmd appops set <package> <op> allow`
+for each appops change; `settings delete global ble_scan_always_enabled`. They are also in the header of tune.sh.
+
+Watch items (INFERENCE, for the record; the owner's decisions stand):
+- Four of the five new disables (`device_remote_config_sync_service`, `ale`, `connectivitydiag`, `katoch`) were in
+  this plan's "role unclear" group, with no Fire TV list in this repo disabling them. `providers.contentsupport` is
+  disabled on the same-build list, but the Fire OS 7 TV list notes it also switches the text-to-speech engine. If
+  something misbehaves, these five are the first restore candidates: Alexa or VoiceView speech for
+  `contentsupport`; Settings > Network > connection checks for `connectivitydiag`.
+- App-ops background limits on protected system services may not stop them entirely (a service another app or the
+  system binds to keeps running). A later `ps` snapshot would show whether `diode` and the others still run.
+
+tune.sh updated: expected counts 195 / 58; the verification block now also checks the background limits on Silk,
+the Appstore and the four telemetry packages (both ops), that the five round-2 packages are disabled, the three
+animation scales at 0.5, and `ble_scan_always_enabled` = 0. New `--verify` option: runs only pre-flight and
+verification, changing nothing; use it for every re-check. Dry-run against a stubbed `adb` (26 PASS); not run on
+the stick.

@@ -15,8 +15,8 @@ Provenance labels used in every file:
 ## Status: COMPLETE (2026-10-25)
 
 Final state and the standing note for updates: [audit-log.md](audit-log.md), "Project complete". If the
-staged Fire OS update ever installs, run a fresh CHECK and re-verify the counts (200 enabled, 53 disabled), the
-disables, the verifier setting and D1 before anything else; an update may turn things back on.
+staged Fire OS update ever installs, run a fresh CHECK and re-verify the whole tuned state before anything else
+(`bash fire-deamazon/tune.sh --verify`: 195 enabled, 58 disabled since round 2); an update may turn things back on.
 
 Follow-up tried 2026-10-25: clearing the staged update with `pm clear` was **refused** (protected package), so it
 cannot be cleared from the shell: [06-ota-clear.md](06-ota-clear.md). Standing posture: forced updater disabled,
@@ -32,7 +32,7 @@ a look at About now and then, and the full re-check above if the build ever chan
 | Final runbook (D1 checks, casting, persistence, D2), manual | [05-final-runbook.md](05-final-runbook.md), snippets in [snippets.md](snippets.md) | Complete (run by hand) |
 | Ceiling: what full ownership needs | [ceiling.md](ceiling.md) | Done for AFTSS on PS7717: shell-only |
 | Quit-on-exit research | [lifecycle.md](lifecycle.md) | Done; SDK 28, so the recommended per-app restriction is available |
-| Tune script: animation scales 0.5, cache trim, verification (Mac, adb) | [tune.sh](tune.sh) | Ran 2026-10-25: PASS (scales 0.5, about 100 MB caches freed) |
+| Tune script: animation scales 0.5, cache trim, verification (Mac, adb) | [tune.sh](tune.sh) | Ran 2026-10-25: PASS. Since round 2, use `--verify` for re-checks (expects 195 / 58) |
 | Unresolved | [unresolved.md](unresolved.md) | Living list |
 
 ## Fixed constraints (DIRECT)

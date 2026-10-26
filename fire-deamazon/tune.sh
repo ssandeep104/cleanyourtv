@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# fire-deamazon/tune.sh: animation scales to 0.5, cache trim, then a verification block.
+# fire-deamazon/tune.sh: animation scales to 0.5, cache trim, then a verification block of the whole tuned state.
 # One run from a Mac (or Linux) terminal with adb connected to the stick (AFTSS, Fire OS 7.7.1.7 PS7717/5741).
 #
 # Run:     bash fire-deamazon/tune.sh
+#          Verification only, no changes (use this for re-checks; sections 1 and 2 are skipped):
+#          bash fire-deamazon/tune.sh --verify
 #          (with more than one adb device attached: ANDROID_SERIAL=<stick ip>:5555 bash fire-deamazon/tune.sh)
 # Log:     fire-deamazon/tune-YYYYmmdd-HHMMSS.log, next to this script.
 #
@@ -16,6 +18,15 @@
 #   adb shell settings put global transition_animation_scale 1.0
 #   adb shell settings put global animator_duration_scale 1.0
 # The cache trim has no restore and needs none.
+#
+# The verification block also covers round 2 (2026-10-26, applied by hand over adb, not by this script). Its
+# restore lines, for reference only:
+#   adb shell pm enable --user 0 com.amazon.device_remote_config_sync_service   (same for com.amazon.ale,
+#     com.amazon.providers.contentsupport, com.amazon.connectivitydiag, com.amazon.katoch)
+#   adb shell cmd appops set com.amazon.cloud9 RUN_ANY_IN_BACKGROUND allow       (same for com.amazon.venezia)
+#   adb shell cmd appops set com.amazon.diode RUN_ANY_IN_BACKGROUND allow; adb shell cmd appops set com.amazon.diode RUN_IN_BACKGROUND allow
+#     (same pair for com.amazon.device.logmanager, com.amazon.device.crashmanager, com.fireos.usagestats.proxy)
+#   adb shell settings delete global ble_scan_always_enabled                     (it was unset before)
 # Exit codes: 0 PASS, 1 different build or a PROBLEM line, 2 adb connection or read failed (nothing changed).
 # Run it once. A second run would read 0.5 as the 'before' value; the first run's log keeps the true restore lines.
 
@@ -26,10 +37,15 @@ LOG="$HERE/tune-$(date +%Y%m%d-%H%M%S).log"
 exec > >(tee -a "$LOG") 2>&1
 
 EXPECT_BUILD="Fire OS 7.7.1.7 (PS7717/5741)"
-EXPECT_ENABLED=200
-EXPECT_DISABLED=53
+EXPECT_ENABLED=195
+EXPECT_DISABLED=58
 SCALES="window_animation_scale transition_animation_scale animator_duration_scale"
 D1_APPS="com.amazon.firetv.youtube com.instagram.airwave"
+BG_APPS="com.amazon.cloud9 com.amazon.venezia"
+TELEMETRY="com.amazon.device.logmanager com.amazon.device.crashmanager com.amazon.diode com.fireos.usagestats.proxy"
+R2_DISABLED="com.amazon.device_remote_config_sync_service com.amazon.ale com.amazon.providers.contentsupport com.amazon.connectivitydiag com.amazon.katoch"
+VERIFY_ONLY=0
+[ "${1:-}" = "--verify" ] && VERIFY_ONLY=1
 
 PASS=0
 PROBLEM=0
@@ -73,6 +89,9 @@ EN0="$(sh_ pm list packages -e | wc -l | tr -d ' ')"
 DI0="$(sh_ pm list packages -d | wc -l | tr -d ' ')"
 echo "enabled: $EN0  disabled: $DI0 (before)"
 
+if [ "$VERIFY_ONLY" = 1 ]; then
+  echo "verification only (--verify): sections 1 and 2 skipped, nothing will be changed"
+else
 section "1. Animation scales"
 echo "read before:"
 RESTORE=""
@@ -112,6 +131,7 @@ else
 fi
 echo "/data after:"
 sh_ df -h /data | sed 's/^/  /'
+fi
 
 section "3. Verification"
 BUILD2="$(sh_ getprop ro.build.version.name)"
@@ -136,13 +156,39 @@ for p in $D1_APPS; do
     *) problem "D1 $p: $v (expected ignore)" ;;
   esac
 done
+for p in $BG_APPS; do
+  v="$(sh_ cmd appops get "$p" RUN_ANY_IN_BACKGROUND)"
+  case "$v" in
+    *ignore*) pass "background $p: $v" ;;
+    *) problem "background $p: $v (expected ignore)" ;;
+  esac
+done
+for p in $TELEMETRY; do
+  for op in RUN_ANY_IN_BACKGROUND RUN_IN_BACKGROUND; do
+    v="$(sh_ cmd appops get "$p" "$op")"
+    case "$v" in
+      *ignore*) pass "telemetry $p $op: $(printf '%s' "$v" | tr '\n' ' ')" ;;
+      *) problem "telemetry $p $op: $v (expected ignore)" ;;
+    esac
+  done
+done
+DLIST="$(sh_ pm list packages -d)"
+for p in $R2_DISABLED; do
+  if printf '%s\n' "$DLIST" | grep -qx "package:$p"; then pass "disabled: $p"; else problem "$p is not disabled (round 2 expects it disabled)"; fi
+done
+for s in $SCALES; do
+  v="$(sh_ settings get global "$s")"
+  case "$v" in 0.5|0.50) pass "$s = $v" ;; *) problem "$s = $v (expected 0.5)" ;; esac
+done
+BLE="$(sh_ settings get global ble_scan_always_enabled)"
+[ "$BLE" = "0" ] && pass "ble_scan_always_enabled: $BLE" || problem "ble_scan_always_enabled: $BLE (expected 0)"
 
 section "Summary"
 echo "PASS: $PASS   PROBLEM: $PROBLEM"
 if [ "$PROBLEM" -eq 0 ]; then
   echo "RESULT: PASS"
 else
-  echo "RESULT: PROBLEM (see the PROBLEM lines above; the restore lines are in section 1)"
+  echo "RESULT: PROBLEM (see the PROBLEM lines above; restore lines: the header of tune.sh, and section 1 of the first run's log)"
 fi
 echo "log saved: $LOG"
 [ "$PROBLEM" -eq 0 ]
