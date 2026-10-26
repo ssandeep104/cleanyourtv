@@ -674,3 +674,13 @@ ever fails or hangs, `settings put global package_verifier_enable 1` puts it bac
 fresh CHECK, then re-verifying the counts, the disables, the verifier setting and D1, because an update may turn
 things back on. Nothing is redone until that read has been reviewed. The read lines are in
 [05-final-runbook.md](05-final-runbook.md), "Appendix".
+
+## Follow-up planned: clearing the staged update (DIRECT request, 2026-10-25 late evening CT)
+
+Correction to the close-out position: the staged "System components" update cannot be **prevented** from the
+shell (the update packages are protected), but it may be **cleared**: AFTVnews recommends
+`pm clear com.amazon.device.software.ota` for an update that is already downloaded (DOCUMENT; older guidance). Plan
+in [06-ota-clear.md](06-ota-clear.md): About wording before and after, one clear line, readbacks, a reboot check.
+Open points (U22): Android may refuse to clear a protected package's data, and the update file may live outside the
+app's data, so About decides, not `Success`. It can download again afterwards; a look at About every week or two,
+with a re-clear when "Update to install" returns, joins the standing note. Not run yet.

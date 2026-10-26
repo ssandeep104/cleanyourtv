@@ -18,6 +18,9 @@ Final state and the standing note for updates: [audit-log.md](audit-log.md), "Pr
 staged Fire OS update ever installs, run a fresh CHECK and re-verify the counts (200 enabled, 53 disabled), the
 disables, the verifier setting and D1 before anything else; an update may turn things back on.
 
+Follow-up, planned: clearing the staged update with `pm clear` on the update app, and re-clearing it whenever
+About shows "Update to install" again: [06-ota-clear.md](06-ota-clear.md).
+
 | Step | File | State |
 |---|---|---|
 | 0. Read-only audit and on-stick backup | [00-audit.md](00-audit.md), results in [audit-log.md](audit-log.md) | Complete (0.0 to 0.9, 0.5c, 0.5d) |

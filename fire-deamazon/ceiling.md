@@ -43,7 +43,8 @@ What shell-only means for your goals, plainly:
   `com.amazon.minerva.client.api`, `com.amazon.device.logmanager`, `com.amazon.device.crashmanager`,
   `com.amazon.diode` and `com.fireos.usagestats.proxy` there. Expect the same here (DOCUMENT).
 - **Updates cannot be stopped (AUDIT, C1):** `com.amazon.device.software.ota` and `.ota.override` are protected;
-  only `forcedotaupdater.v2` could be disabled. An update was already staged and will install on its own.
+  only `forcedotaupdater.v2` could be disabled. A staged update may still be **cleared** with `pm clear` on the update
+  app (06-ota-clear.md; untested here, may be refused), but not prevented: it can download again.
 - Amazon's app blacklist: cannot be switched off with confidence from the shell (U2).
 - **Uninstall for user 0 is refused** on this build (AUDIT, stage A1: `DELETE_FAILED_INTERNAL_ERROR`). Amazon
   packages can be disabled, not removed for your user; a disabled package cannot run, but stays listed.

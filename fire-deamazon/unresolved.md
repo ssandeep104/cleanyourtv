@@ -25,3 +25,4 @@ Each item below is kept out of every batch until it is verified.
 | U19 | ~~Why Home does not bring Couchy back after a drop-out~~ | Resolved by the hand test: once Couchy is reopened, Home On Fire's redirect works; it does not restart Couchy itself | Done; recovery is reopening Couchy |
 | U20 | Whether Stremio's memory can be cut on this stick (external player such as VLC, Stremio's cache setting) | Not tested; 1080p alone still reached 584 MB | A playback test with MEASURE-style memory reads, if the owner wants it |
 | U21 | ~~Why `vizzini` reads `enabled=1`~~ | Resolved: B7 ran; Fire OS re-enabled it at boot (explicit `1`); the restore then ran | Done |
+| U22 | Whether `pm clear com.amazon.device.software.ota` is accepted on this build, and whether it removes the staged update | Not tried; Android may refuse to clear a protected package's data, and the update file may live outside the app's data | [06-ota-clear.md](06-ota-clear.md), F1 and F2 |
