@@ -701,3 +701,23 @@ verifier and D1. The periodic re-clear proposed in 06-ota-clear.md is withdrawn.
 Note on the new route (INFERENCE): ADB over the network on port 5555 is unencrypted. With both atvTools and the Mac
 authorized, it stays a standing access path on the home network; turning ADB debugging off when it is not needed
 closes it (the owner's choice).
+
+## Incident note: slow Home handoff, no crash (AUDIT over adb, 2026-10-25 about 21:54 to 22:00 CT)
+
+Owner report (DIRECT): Couchy "gone", the stock launcher on screen, and an apparent crash on Home after relaunching
+Couchy by hand.
+
+Evidence: the crash buffer was empty (no `FATAL EXCEPTION`); Couchy's process (pid 2360) ran continuously from before
+the episode through it, with no death or low-memory kill lines; one `am_low_memory` notice at 21:55:43. A state read
+showed Home On Fire alive (pid 1589), its accessibility grant intact, and Couchy installed, enabled, `stopped=false`.
+The stick had booted about 21:22 when the TV was turned on; in the snapshot the stock launcher held 125 MB PSS and
+`com.amazon.venezia` (Appstore) 47 MB.
+
+Verdict: no crash and no kill. Couchy sat in the background after the About visit in 06-ota-clear.md F0, and the
+handoff from the stock Home back to Couchy was slow under memory pressure shortly after boot. The Home On Fire to
+Couchy chain is intact. No action taken.
+
+Reading (INFERENCE): this differs from the earlier drop-outs, where Couchy was killed and only reopening it helped.
+Here the redirect was only late, so waiting a few seconds, or pressing Home once more, is the remedy. A visit to the
+stock launcher's own screens (Settings, About) brings the stock launcher's memory up, which makes the slowness more
+likely right after.
