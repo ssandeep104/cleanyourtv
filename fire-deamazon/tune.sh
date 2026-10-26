@@ -16,6 +16,7 @@
 #   adb shell settings put global transition_animation_scale 1.0
 #   adb shell settings put global animator_duration_scale 1.0
 # The cache trim has no restore and needs none.
+# Exit codes: 0 PASS, 1 different build or a PROBLEM line, 2 adb connection or read failed (nothing changed).
 # Run it once. A second run would read 0.5 as the 'before' value; the first run's log keeps the true restore lines.
 
 set -u
@@ -36,6 +37,14 @@ pass()    { PASS=$((PASS + 1));       echo "  PASS     $*"; }
 problem() { PROBLEM=$((PROBLEM + 1)); echo "  PROBLEM  $*"; }
 sh_()     { adb shell "$@" 2>&1 | tr -d '\r'; }
 section() { echo; echo "== $* =="; }
+# A build read is only trusted if it looks like a Fire OS version string; anything else (empty, "error: closed",
+# "device offline", "unauthorized") means the adb connection or the read failed, not that the build changed.
+is_build() { case "$1" in "Fire OS "*) return 0 ;; *) return 1 ;; esac; }
+reconnect_help() {
+  echo "The adb connection or the read failed; nothing on the stick was changed. Reconnect, then run the script again:"
+  echo "  adb disconnect; adb connect <stick ip>:5555     (accept the prompt on the TV if it appears)"
+  echo "  if that fails while the stick answers ping:  adb kill-server; adb connect <stick ip>:5555"
+}
 
 echo "fire-deamazon tune.sh  $(date)"
 echo "log: $LOG"
@@ -44,13 +53,19 @@ section "0. Pre-flight"
 STATE="$(adb get-state 2>&1 | tr -d '\r')"
 if [ "$STATE" != "device" ]; then
   echo "adb get-state: $STATE"
-  echo "No authorized adb device. Connect first (adb connect <stick ip>:5555, accept the prompt on the TV). Nothing changed."
-  exit 1
+  echo "No authorized adb device."
+  reconnect_help
+  exit 2
 fi
 BUILD="$(sh_ getprop ro.build.version.name)"
 echo "build: $BUILD"
+if ! is_build "$BUILD"; then
+  echo "Could not read the build (the text above is an adb error, not a build)."
+  reconnect_help
+  exit 2
+fi
 if [ "$BUILD" != "$EXPECT_BUILD" ]; then
-  echo "Build is not '$EXPECT_BUILD': the staged update may have installed."
+  echo "The stick reports a different build than '$EXPECT_BUILD': the staged update may have installed."
   echo "Stopping before any change. Run the standing re-check in fire-deamazon/README.md first."
   exit 1
 fi
@@ -100,7 +115,13 @@ sh_ df -h /data | sed 's/^/  /'
 
 section "3. Verification"
 BUILD2="$(sh_ getprop ro.build.version.name)"
-[ "$BUILD2" = "$EXPECT_BUILD" ] && pass "build: $BUILD2" || problem "build: $BUILD2 (expected $EXPECT_BUILD)"
+if ! is_build "$BUILD2"; then
+  problem "build could not be read: $BUILD2 (adb connection or read failed; reconnect and run section 3's checks again)"
+elif [ "$BUILD2" = "$EXPECT_BUILD" ]; then
+  pass "build: $BUILD2"
+else
+  problem "build: $BUILD2 (expected $EXPECT_BUILD; the staged update may have installed)"
+fi
 EN1="$(sh_ pm list packages -e | wc -l | tr -d ' ')"
 DI1="$(sh_ pm list packages -d | wc -l | tr -d ' ')"
 [ "$EN1" = "$EXPECT_ENABLED" ] && pass "enabled: $EN1" || problem "enabled: $EN1 (expected $EXPECT_ENABLED)"

@@ -32,7 +32,7 @@ a look at About now and then, and the full re-check above if the build ever chan
 | Final runbook (D1 checks, casting, persistence, D2), manual | [05-final-runbook.md](05-final-runbook.md), snippets in [snippets.md](snippets.md) | Complete (run by hand) |
 | Ceiling: what full ownership needs | [ceiling.md](ceiling.md) | Done for AFTSS on PS7717: shell-only |
 | Quit-on-exit research | [lifecycle.md](lifecycle.md) | Done; SDK 28, so the recommended per-app restriction is available |
-| Tune script: animation scales 0.5, cache trim, verification (Mac, adb) | [tune.sh](tune.sh) | Ready, not run |
+| Tune script: animation scales 0.5, cache trim, verification (Mac, adb) | [tune.sh](tune.sh) | Ran 2026-10-25: PASS (scales 0.5, about 100 MB caches freed) |
 | Unresolved | [unresolved.md](unresolved.md) | Living list |
 
 ## Fixed constraints (DIRECT)

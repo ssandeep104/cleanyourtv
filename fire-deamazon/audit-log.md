@@ -734,3 +734,21 @@ Evidence on the scales (DOCUMENT): the list for this exact build (`examples/amaz
 0.5 helps; the Fire OS 8 list (`examples/amazon-fire-tv-stick-4k-2023/`) found that at 0.5 every entry in the stock
 launcher's side menu closed the menu without opening anything, fixed by going back to 1.0. That was Fire OS 8; if
 the stock launcher's menus misbehave here after the change, the restore lines put the scales back.
+
+## tune.sh run (AUDIT, relayed by Sonny, 2026-10-25 about 22:55 CT)
+
+Ran from the owner's Mac over adb: **RESULT: PASS** (PASS 11, PROBLEM 0). All three animation scales read back 0.5;
+the values read before are saved as restore lines in the run log (`tune-20261025-225520.log`, on the Mac).
+`pm trim-caches 999G` freed about 100 MB (`/data` available 2.6G to 2.7G). Verification: build Fire OS 7.7.1.7
+(PS7717/5741), 200 / 53 unchanged, verifier 0, D1 `ignore` for YouTube and Instagram.
+
+First attempt (22:42): stopped at pre-flight with `build: error: closed`, because the adb connection had dropped, and
+the script printed the build-mismatch warning ("the staged update may have installed"), which alarmed the owner.
+Nothing changed on the stick. Fixed in tune.sh: a build read that does not look like `Fire OS ...` is now reported
+as a failed connection or read, with reconnect steps, and exits 2; only a real, different build string gives the
+update warning (exit 1). Dry-run against stubbed `adb` for both paths.
+
+Connection saga (DIRECT): after the drop, reconnects failed with `No route to host` although the stick answered ping.
+The final blocker was a wedged adb server on the Mac; `adb kill-server` and a fresh `adb connect` fixed it (now in
+the script's reconnect help). The owner also rebooted the stick in between; About still showed "Install Update"
+afterwards, and this run's build read confirms the staged update did not install.
