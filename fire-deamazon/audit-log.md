@@ -721,3 +721,16 @@ Reading (INFERENCE): this differs from the earlier drop-outs, where Couchy was k
 Here the redirect was only late, so waiting a few seconds, or pressing Home once more, is the remedy. A visit to the
 stock launcher's own screens (Settings, About) brings the stock launcher's memory up, which makes the slowness more
 likely right after.
+
+## Tune script prepared (DIRECT request, 2026-10-25 about 22:16 CT; not run yet)
+
+[tune.sh](tune.sh), one run from the owner's Mac over adb: animation scales to 0.5 (window, transition, animator),
+`pm trim-caches 999G` with `/data` usage before and after, then a verification block (build, 200 / 53, verifier 0,
+D1 `ignore` for YouTube and Instagram) and a PASS / PROBLEM summary. It stops before any change if adb has no
+authorized device or the build is not PS7717/5741, and it writes the exact restore lines for the scales it read
+into its log. Dry-run here against a stubbed `adb`; not run on the stick.
+
+Evidence on the scales (DOCUMENT): the list for this exact build (`examples/amazon-fire-tv-stick-lite-2020/`) says
+0.5 helps; the Fire OS 8 list (`examples/amazon-fire-tv-stick-4k-2023/`) found that at 0.5 every entry in the stock
+launcher's side menu closed the menu without opening anything, fixed by going back to 1.0. That was Fire OS 8; if
+the stock launcher's menus misbehave here after the change, the restore lines put the scales back.

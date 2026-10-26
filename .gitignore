@@ -19,3 +19,6 @@ traces/
 *.aab
 launcher/hs_err_pid*.log
 launcher/replay_pid*.log
+
+# fire-deamazon/tune.sh run logs
+fire-deamazon/tune-*.log
